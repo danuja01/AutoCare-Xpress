@@ -3,8 +3,12 @@ import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Stack } from "expo-router";
 import { COLORS, SIZES } from "../../constants";
 import styles from "./home.style";
-import { HomeHeader, Search, OfficialDealers } from "../../components";
-import ServiceCenters from "../../components/home/serviceCenters";
+import {
+  HomeHeader,
+  Search,
+  OfficialDealers,
+  ServiceCenters,
+} from "../../components";
 
 export default Home = () => {
   return (
