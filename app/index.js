@@ -34,10 +34,10 @@ export default function Page() {
         }}
       />
       <Tab.Screen
-        name="Payment"
+        name="Active"
         component={Active}
         options={{
-          tabBarLabel: "Payment",
+          tabBarLabel: "Active",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="view-sequential"
@@ -48,10 +48,10 @@ export default function Page() {
         }}
       />
       <Tab.Screen
-        name="History"
+        name="Account"
         component={Account}
         options={{
-          tabBarLabel: "History",
+          tabBarLabel: "Account",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
