@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { useCallback, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { COLORS } from "../constants";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,9 +33,8 @@ const Layout = () => {
     <Stack
       onLayout={onLayoutRootView}
       screenOptions={{
-        headerShown: false,
         cardStyle: {
-          backgroundColor: "#ffffff",
+          backgroundColor: COLORS.background,
         },
       }}
     />
