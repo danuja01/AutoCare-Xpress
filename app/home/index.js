@@ -1,13 +1,25 @@
 import React from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Stack } from "expo-router";
+import { COLORS, SIZES } from "../../constants";
+import styles from "./home.style";
+import { HomeHeader, Search, OfficialDealers } from "../../components";
+import ServiceCenters from "../../components/home/serviceCenters";
 
 export default Home = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
       <Stack.Screen options={{ header: () => null }} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text>web</Text>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <HomeHeader
+          iconUrl={require("../../assets/images/user.png")}
+          dimension={SIZES.xxxLarge * 1.15}
+          handlePressUser={() => alert("Profile")}
+          handlePressLocation={() => alert("Location")}
+        />
+        <Search />
+        <OfficialDealers />
+        <ServiceCenters />
       </ScrollView>
     </SafeAreaView>
   );

@@ -9,6 +9,7 @@ specifiers:
   '@babel/plugin-proposal-export-namespace-from': ^7.18.9
   expo: ^49.0.3
   expo-constants: ~14.4.2
+  expo-linear-gradient: ^12.5.0
   expo-linking: ~5.0.2
   expo-router: 2.0.0
   expo-splash-screen: ~0.20.4
@@ -25,6 +26,7 @@ specifiers:
 dependencies:
   expo: 49.0.13_@babel+core@7.23.2
   expo-constants: 14.4.2_expo@49.0.13
+  expo-linear-gradient: 12.5.0_expo@49.0.13
   expo-linking: 5.0.2_expo@49.0.13
   expo-router: 2.0.0_aq7abl56bxclrcdootpzffjjdi
   expo-splash-screen: 0.20.5_expo@49.0.13
@@ -3658,6 +3660,14 @@ packages:
 
   /expo-keep-awake/12.3.0_expo@49.0.13:
     resolution: {integrity: sha512-ujiJg1p9EdCOYS05jh5PtUrfiZnK0yyLy+UewzqrjUqIT8eAGMQbkfOn3C3fHE7AKd5AefSMzJnS3lYZcZYHDw==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 49.0.13_@babel+core@7.23.2
+    dev: false
+
+  /expo-linear-gradient/12.5.0_expo@49.0.13:
+    resolution: {integrity: sha512-GOV2wODawr2biRCtF2Yb5+wLzvnwXS8dAblfQO7qjyh4f7TDTJn7X0TlVSDMNhIdbAcZBrdxvGFeE2iXdzQ6ow==}
     peerDependencies:
       expo: '*'
     dependencies:
