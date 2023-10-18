@@ -21,6 +21,8 @@ specifiers:
   react-native-reanimated: ~3.3.0
   react-native-safe-area-context: 4.6.3
   react-native-screens: ~3.22.0
+  react-native-select-dropdown: ^3.4.0
+  react-native-stock-star-rating: ^1.0.6
   react-native-web: ~0.19.6
 
 dependencies:
@@ -38,6 +40,8 @@ dependencies:
   react-native-reanimated: 3.3.0_e7s6hvlhnz7kiuf7mowirufy5y
   react-native-safe-area-context: 4.6.3_6syixf76bqx5r4tgwtwyqyssoi
   react-native-screens: 3.22.1_6syixf76bqx5r4tgwtwyqyssoi
+  react-native-select-dropdown: 3.4.0
+  react-native-stock-star-rating: 1.0.6
   react-native-web: 0.19.9_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
@@ -6256,6 +6260,14 @@ packages:
       react-freeze: 1.0.3_react@18.2.0
       react-native: 0.72.3_3ty4uhgchcxcux4so2j72i2qn4
       warn-once: 0.1.1
+    dev: false
+
+  /react-native-select-dropdown/3.4.0:
+    resolution: {integrity: sha512-9xK1z4tYpwMxp3hsM0y1+xfqq/JoMh+l7sBsJ81b2eikFwT6ZbndFBqupQXrsQ1akce9hgC/10Nkzj0LjVjeXQ==}
+    dev: false
+
+  /react-native-stock-star-rating/1.0.6:
+    resolution: {integrity: sha512-YQMGVYX03kq9cW0Of0y+fad9A1RpyM/ZOKMb2o15DfITcceLlrz5x83B6kBOl6SxM/YzdXpMvphWNZehilJ46g==}
     dev: false
 
   /react-native-web/0.19.9_biqbaboplfbrettd7655fr4n2y:

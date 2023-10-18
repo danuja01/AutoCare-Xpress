@@ -6,57 +6,70 @@ import { View, Text } from "react-native";
 import Home from "./home";
 import Active from "./active-job";
 import Account from "./account";
+import { Stack } from "expo-router";
 
 const Tab = createBottomTabNavigator();
 
 export default function Page() {
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: "#ffffff",
-          borderTopWidth: 0,
-          elevation: 0,
-          shadowOpacity: 0,
-          height: 80,
-        },
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#ffffff",
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
+      <Stack.Screen options={{ header: () => null }} />
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor: "#ffffff",
+            borderTopWidth: 0,
+            elevation: 0,
+            shadowOpacity: 0,
+            height: 80,
+          },
         }}
-      />
-      <Tab.Screen
-        name="Active"
-        component={Active}
-        options={{
-          tabBarLabel: "Active",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="view-sequential"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Account"
-        component={Account}
-        options={{
-          tabBarLabel: "Account",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      >
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{
+            tabBarLabel: "Home",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Active"
+          component={Active}
+          options={{
+            tabBarLabel: "Active",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="view-sequential"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Account"
+          component={Account}
+          options={{
+            tabBarLabel: "Account",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </View>
   );
 }
