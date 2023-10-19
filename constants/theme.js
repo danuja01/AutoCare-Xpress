@@ -14,6 +14,7 @@ const COLORS = {
 
   red: "#8A0000",
   yellow: "#FFB800",
+  lightBlue: "#91C8E4",
 };
 
 const FONT = {

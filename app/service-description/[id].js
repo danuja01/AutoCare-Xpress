@@ -1,13 +1,16 @@
 import { View, Text, SafeAreaView, ScrollView } from "react-native";
-import styles from "./serviceDesc.style";
-import { COLORS } from "../../constants";
 import { Stack } from "expo-router";
-import BackNavBtn from "../../components/common/buttons/backNavBtn";
-import PackageCard from "../../components/service-desc/package-card/packageCard";
-import RatingPanel from "../../components/service-desc/rating-panel/ratingPanel";
-import Dropdown from "../../components/common/dropdown/dropdown";
 import { TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+
+import styles from "./serviceDesc.style";
+import { COLORS } from "../../constants";
+import {
+  BackNavBtn,
+  PackageCard,
+  RatingPanel,
+  Dropdown,
+} from "../../components";
 
 const serviceDetails = {
   name: "Auto Miraj",
