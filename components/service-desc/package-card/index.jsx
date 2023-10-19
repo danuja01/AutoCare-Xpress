@@ -15,14 +15,12 @@ const BulletItem = ({ name, desc }) => {
   );
 };
 
-const PackageCard = ({ locations, description, packages }) => {
+const PackageCard = ({ locations, description, packages, imageUrl }) => {
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require("../../../assets/images/auto-miraj-logo.png")}
-      />
+      <Image style={styles.logo} source={{ uri: imageUrl }} />
       <Text style={styles.description}>{description}</Text>
+
       <View style={styles.locationsContainer}>
         <MaterialCommunityIcons
           name="map-marker"
@@ -31,16 +29,18 @@ const PackageCard = ({ locations, description, packages }) => {
           style={styles.locationIcon}
         />
         <Text style={styles.locations}>
-          {locations.length > 1
-            ? `${locations[0]} | ${locations[1]} | ${locations[2]} ${
-                locations.length - 3 > 0 ? `+ ${locations.length - 3}` : ""
-              }`
-            : locations[0]}
+          {locations &&
+            (locations.length > 1
+              ? `${locations[0]} | ${locations[1]} | ${locations[2]} ${
+                  locations.length - 3 > 0 ? `+ ${locations.length - 3}` : ""
+                }`
+              : locations[0])}
         </Text>
       </View>
-      {packages.map((item, index) => (
-        <BulletItem key={index} name={item.name} desc={item.desc} />
-      ))}
+      {packages &&
+        packages.map((item, index) => (
+          <BulletItem key={index} name={item.name} desc={item.desc} />
+        ))}
     </View>
   );
 };

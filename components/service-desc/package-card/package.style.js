@@ -10,10 +10,11 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.large,
   },
   logo: {
-    width: "100%",
+    width: SIZES.xxxLarge,
+    height: SIZES.xxxLarge,
     resizeMode: "contain",
     alignSelf: "center",
-    marginBottom: SIZES.medium,
+    marginBottom: SIZES.large,
   },
   description: {
     fontFamily: FONT.regular,
