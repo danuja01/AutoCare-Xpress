@@ -2,8 +2,11 @@ import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import styles from "./officialDealers.style";
 import OfficialDealersCard from "../../common/cards/official";
 import { SIZES } from "../../../constants";
+import { useRouter } from "expo-router";
 
-const OfficialDealers = () => {
+const OfficialDealers = ({ data }) => {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -20,21 +23,14 @@ const OfficialDealers = () => {
           paddingHorizontal: SIZES.large,
         }}
       >
-        {Array(5)
-          .fill()
-          .map((item, index) => (
-            <>
-              <OfficialDealersCard
-                key={index + 1 + "a"}
-                iconUrl={require("../../../assets/images/merc.png")}
-                name={"Mercedes Benz"}
-              />
-              <OfficialDealersCard
-                key={index + 1 + "b"}
-                iconUrl={require("../../../assets/images/bmw.png")}
-                name={"BMW"}
-              />
-            </>
+        {data &&
+          data.map((item, index) => (
+            <OfficialDealersCard
+              key={item.id}
+              iconUrl={item.imageUrl}
+              name={item.name}
+              handlePress={() => router.push(`/service-description/${item.id}`)}
+            />
           ))}
       </ScrollView>
     </View>
