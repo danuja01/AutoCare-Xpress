@@ -28,10 +28,7 @@ const ServiceCenterCard = ({ name, locations, iconUrl, onPressHanlde }) => {
           </Text>
         </View>
       </View>
-      <Image
-        source={require("../../../../assets/images/autoMiraj.png")}
-        style={styles.serviceLogo}
-      />
+      <Image source={{ uri: iconUrl }} style={styles.serviceLogo} />
     </TouchableOpacity>
   );
 };
