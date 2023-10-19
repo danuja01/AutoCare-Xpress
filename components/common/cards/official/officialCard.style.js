@@ -17,8 +17,6 @@ const styles = StyleSheet.create({
   officialImg: {
     width: SIZES.ultra,
     height: SIZES.ultra,
-    borderRadius: SIZES.xxxLarge / 2,
-    backgroundColor: COLORS.white,
   },
   officialName: {
     fontSize: SIZES.regular,
