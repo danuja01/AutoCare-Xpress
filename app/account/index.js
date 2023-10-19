@@ -7,31 +7,63 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { Stack } from "expo-router";
-import { db } from "../../firebase/config";
+import { db, storage } from "../../firebase/config";
 import { ref, set } from "firebase/database";
+import { getDownloadURL, uploadBytes, ref as imgRef } from "firebase/storage";
 import { COLORS } from "../../constants";
 
 const Account = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [id, setId] = useState(1);
+  const [image, setImage] = useState(null);
+  const [id, setId] = useState(0);
 
-  const addData = () => {
-    set(ref(db, "posts/" + id), {
-      title: title,
-      description: description,
-    })
-      .then(() => {
-        console.log("Data set");
-      })
-      .catch((error) => {
-        console.log("errorrrr>>>>" + error);
+  const addData = async () => {
+    try {
+      setId((prev) => prev + 100);
+
+      const storageRef = imgRef(storage, "images/" + id + ".jpg");
+      await uploadBytes(storageRef, image).then((snapshot) => {
+        console.log("Uploaded a blob or file!");
       });
 
-    setTitle("");
-    setDescription("");
-    setId(id + 1);
+      const imageUrl = await getDownloadURL(storageRef);
+
+      set(ref(db, "posts/" + id), {
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
+      });
+
+      console.log("Data set");
+      setTitle("");
+      setDescription("");
+      setImage(null);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const selectImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    // console.log("Result:", result);
+
+    if (!result.canceled) {
+      console.log(">>>>>>>>>>>>>>>>>>>", result.assets[0].uri);
+      const response = await fetch(result.uri);
+      const blob = await response.blob();
+      setImage(blob);
+    } else {
+      console.log("Image not selected");
+    }
   };
 
   return (
@@ -51,6 +83,11 @@ const Account = () => {
           value={description}
           onChangeText={(text) => setDescription(text)}
         />
+
+        {/* image */}
+        <TouchableOpacity style={styles.button} onPress={selectImage}>
+          <Text>Select Image</Text>
+        </TouchableOpacity>
 
         {/* button */}
         <TouchableOpacity style={styles.button} onPress={addData}>

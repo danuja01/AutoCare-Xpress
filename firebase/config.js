@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
 
 import { config } from "../constants/config";
 
@@ -18,5 +19,6 @@ if (!firebase.apps.length) {
 }
 
 const db = getDatabase();
+const storage = getStorage();
 
-export { db };
+export { db, storage };
