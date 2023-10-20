@@ -1,11 +1,25 @@
-import * as React from "react";
-import { View, StyleSheet, Pressable, Text } from "react-native";
-import { Image } from "expo-image";
+import React from "react";
+import { View, StyleSheet, Pressable, Text, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, Border, FontFamily } from "../../assets/GlobalStyles";
 
-const AutoMirajCard = (totalReviews) => {
+const AutoMirajCard = ({ totalReviews, avgRating }) => {
   const navigation = useNavigation();
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 0; i < avgRating; i++) {
+      stars.push(
+        <Image
+          key={i}
+          style={styles.starIcon}
+          contentFit="cover"
+          source={require("../../assets/images/locationrating/star.png")}
+        />
+      );
+    }
+    return stars;
+  };
 
   return (
     <View style={styles.groupParent}>
@@ -31,23 +45,28 @@ const AutoMirajCard = (totalReviews) => {
         </View>
         <View style={[styles.totalRatingsParent, styles.groupInnerLayout]}>
           <Text style={[styles.totalRatings, styles.autoMirajTypo]}>
-            <Text style={styles.text}>4.7/5</Text>
+            <Text style={styles.text}>{avgRating}/5</Text>
             <Text style={styles.text1}>{` `}</Text>
             <Text style={styles.text2}>{`| `}</Text>
-            <Text style={styles.text1}> {totalReviews.totalReviews} Total Ratings</Text>
+            <Text style={styles.text1}> {totalReviews} Total Ratings</Text>
           </Text>
-          <Image
-            style={[styles.groupInner, styles.groupInnerLayout]}
-            contentFit="cover"
-            source={require("../../assets/images/locationrating/group-44.png")}
-          />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {renderStars()}
+          </View>
         </View>
       </View>
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
+  starIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 2,
+    left: 210,
+  },
   groupChildLayout: {
     width: 41,
     height: 41,

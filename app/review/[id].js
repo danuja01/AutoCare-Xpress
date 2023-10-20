@@ -56,13 +56,15 @@ const ReviewPage = () => {
     }
   };
 
-  const avgrating = () => {
-    let totalRating = 0;
-    reviews.forEach((reviewData) => {
-      totalRating += reviewData.rating;
-    });
-    return console.log(totalRating / reviews.length);
-  };
+  const calculateAverageRating = () => {
+    let total = 0;
+    for (let i = 0; i < reviews.length; i++) {
+      total += reviews[i].rating;
+    }
+    return (total / reviews.length).toFixed(1);
+  }
+
+  const avgRating = calculateAverageRating();
 
   return (
     <View style={styles.reviewPage}>
@@ -105,7 +107,7 @@ const ReviewPage = () => {
       </RawBottomSheet>
 
       <View style={[styles.reviewPageChild, styles.groupParentPosition]} />
-      <AutoMirajCard totalReviews={totalReviews}/>
+      <AutoMirajCard totalReviews={totalReviews} avgRating={avgRating} />
       <View></View>
     </View>
   );
