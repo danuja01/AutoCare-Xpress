@@ -130,7 +130,7 @@ const BookingPlacePageClosedPo = () => {
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
-            apiKey={'AIzaSyAIW-Z6tN_sRnWWYludFvL2I1Dq3r3cQyk'} 
+            apiKey= {process.env.EXPO_PUBLIC_GOOGLE_API_KEY}
           >
             {currentLocation && (
               <Marker
@@ -147,7 +147,7 @@ const BookingPlacePageClosedPo = () => {
                   <MapViewDirections
                     origin={{latitude: currentLocation.latitude, longitude: currentLocation.longitude}}
                     destination={{latitude: markerLocation.lat, longitude: markerLocation.lng}}
-                    apikey={'AIzaSyAIW-Z6tN_sRnWWYludFvL2I1Dq3r3cQyk'}
+                    apikey={process.env.EXPO_PUBLIC_GOOGLE_API_KEY}
                     strokeWidth={3}
                     strokeColor="blue" // Set the color to blue
                     waypoints={[]} 
