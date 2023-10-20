@@ -8,7 +8,6 @@ import Active from "./active-job";
 import Account from "./account";
 import { Stack } from "expo-router";
 import Location from "./location";
-import Review from "./review";
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +58,7 @@ export default function Page() {
         />
         <Tab.Screen
           name="Account"
-          component={Location}
+          component={Account}
           options={{
             tabBarLabel: "Account",
             tabBarIcon: ({ color, size }) => (

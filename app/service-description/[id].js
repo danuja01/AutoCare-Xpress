@@ -29,6 +29,8 @@ const ServiceDesc = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [islLoading, setIsLoading] = useState(false);
 
+  const sid = params.id;
+
   const fetchDetails = async () => {
     setIsLoading(true);
     const serviceStaionsRef = ref(db, `service-stations/${params.id}`);
@@ -93,7 +95,7 @@ const ServiceDesc = () => {
             imageUrl={serviceDetails.imageUrl}
           />
         )}
-        <RatingPanel rating={4.5} totalRatings={143} />
+        <RatingPanel rating={4.5} totalRatings={143} serviceid = {sid}/>
         <View style={styles.optionContainer}>
           {serviceDetails && (
             <Dropdown
