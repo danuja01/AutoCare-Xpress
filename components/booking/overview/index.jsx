@@ -87,7 +87,7 @@ const Overview = () => {
                 width: 100,
             },
             container: {
-                backgroundColor: "#F3F4F8",
+                backgroundColor: "#E6E8F0",
                 borderRadius: 24,
             },
             }}

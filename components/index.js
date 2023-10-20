@@ -11,6 +11,7 @@ import ActiveHeader from "./active/header";
 import DetailsPane from "./active/detail-pane";
 import CurrentStatus from "./active/current-status";
 import TrackingCard from "./active/tracking-card";
+import SelectCard from "./booking/selectcard";
 
 export {
   HomeHeader,
@@ -26,4 +27,5 @@ export {
   DetailsPane,
   CurrentStatus,
   TrackingCard,
+  SelectCard,
 };
