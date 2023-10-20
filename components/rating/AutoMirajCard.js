@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, Border, FontFamily } from "../../assets/GlobalStyles";
 
-const AutoMirajCard = () => {
+const AutoMirajCard = (totalReviews) => {
   const navigation = useNavigation();
 
   return (
@@ -34,7 +34,7 @@ const AutoMirajCard = () => {
             <Text style={styles.text}>4.7/5</Text>
             <Text style={styles.text1}>{` `}</Text>
             <Text style={styles.text2}>{`| `}</Text>
-            <Text style={styles.text1}> 134 Total Ratings</Text>
+            <Text style={styles.text1}> {totalReviews.totalReviews} Total Ratings</Text>
           </Text>
           <Image
             style={[styles.groupInner, styles.groupInnerLayout]}
