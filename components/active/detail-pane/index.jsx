@@ -19,29 +19,27 @@ const DetailsField = ({ label, value, icon, border = 1 }) => (
   </View>
 );
 
-const DetailsPane = () => {
+const DetailsPane = ({ driver, service, location, vehicleModel }, ...props) => {
   return (
-    <LinearGradient
-      colors={[COLORS.primary, COLORS.secondary]}
-      style={styles.container}
-    >
-      <DetailsField
-        value="Sachintha Dasanayake"
-        label="Driver"
-        icon="account-circle"
-      />
-      <DetailsField
-        value="Auto Miraj - Athurugiriya"
-        label="Service Center"
-        icon="garage"
-      />
-      <DetailsField
-        label="Sachintha Dasanayake"
-        value="Driver"
-        icon="car"
-        border={0}
-      />
-    </LinearGradient>
+    props && (
+      <LinearGradient
+        colors={[COLORS.primary, COLORS.secondary]}
+        style={styles.container}
+      >
+        <DetailsField value={driver} label="Driver" icon="account-circle" />
+        <DetailsField
+          value={`${service} - ${location}`}
+          label="Service Center"
+          icon="garage"
+        />
+        <DetailsField
+          label="Vehicle Model"
+          value={vehicleModel}
+          icon="car"
+          border={0}
+        />
+      </LinearGradient>
+    )
   );
 };
 

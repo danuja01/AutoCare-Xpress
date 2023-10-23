@@ -4,7 +4,7 @@ import { COLORS, SIZES, FONT, SHADOWS } from "../../../constants";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useEffect, useRef } from "react";
 
-const CurrentStatus = () => {
+const CurrentStatus = ({ status }) => {
   const opacity = useRef(new Animated.Value(0)).current;
 
   const animateDot = () => {
@@ -37,7 +37,7 @@ const CurrentStatus = () => {
         color={COLORS.black}
       />
       <View style={{ flex: 1 }}>
-        <Text style={styles.status}>Vehicle Returned</Text>
+        <Text style={styles.status}>{status ? status : "Undefined"}</Text>
         <Text style={styles.label}>Current Status</Text>
       </View>
       <Animated.View
