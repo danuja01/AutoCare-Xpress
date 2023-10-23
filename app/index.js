@@ -8,6 +8,9 @@ import Active from "./active-job";
 import Account from "./account";
 import { Stack } from "expo-router";
 import Location from "./location";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Tab = createBottomTabNavigator();
 
@@ -58,7 +61,7 @@ export default function Page() {
         />
         <Tab.Screen
           name="Account"
-          component={Account}
+          component={Location}
           options={{
             tabBarLabel: "Account",
             tabBarIcon: ({ color, size }) => (

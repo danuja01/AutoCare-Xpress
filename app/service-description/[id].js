@@ -22,8 +22,11 @@ import {
 } from "../../components";
 import { Alert } from "react-native";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "expo-router";
 
 const ServiceDesc = () => {
+  const router = useRouter();
+
   const params = useLocalSearchParams();
   const [serviceDetails, setServiceDetails] = useState({});
   const [refreshing, setRefreshing] = useState(false);
@@ -110,7 +113,7 @@ const ServiceDesc = () => {
           <TouchableOpacity
             style={styles.confirmBtnContainer}
             onPress={() => {
-              alert("Confirm");
+              router.push(`/location`)
             }}
           >
             <LinearGradient

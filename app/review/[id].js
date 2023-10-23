@@ -68,6 +68,7 @@ const ReviewPage = () => {
 
   return (
     <View style={styles.reviewPage}>
+          <Stack.Screen options={{ header: () => null }} />
       <TouchableOpacity style={styles.buttonframeParent} onPress={() => refRBSheet.current.open()}>
         <Text style={styles.confirm}>Add Review</Text>
       </TouchableOpacity>

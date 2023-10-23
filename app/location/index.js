@@ -5,6 +5,7 @@ import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "reac
 import ConfirmForm from "../../components/location/ConfirmForm";
 import { Border, FontSize, FontFamily, Color } from "../../assets/GlobalStyles";
 import { Device } from 'expo-device';
+import { Stack } from "expo-router";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, watchPositionAsync, Accuracy } from "expo-location";
 
 
@@ -109,6 +110,7 @@ const BookingPlacePageClosedPo = () => {
 
   return (
     <View style={styles.bookingPlacePageClosedPo}>
+    <Stack.Screen options={{ header: () => null }} />
       <View style={styles.frameParent}>
         <Image
           style={styles.frameChild}
@@ -227,7 +229,7 @@ const styles = StyleSheet.create({
   },
   autoMiraj: {
     top: 10,
-    left: 81,
+    left: 95,
     fontSize: FontSize.size_base,
     fontWeight: "600",
     fontFamily: FontFamily.interSemiBold,
@@ -263,7 +265,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_mini,
     paddingLeft: 10,
     marginRight: 10,
-    bottom:73,
+    bottom:198,
     left: 60,
   },
   searchButton: {
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_mini,
     paddingHorizontal: 15,
     paddingVertical: 8,
-    bottom:185,
+    bottom:308,
     left: 50,
   },
   searchButtonText: {
