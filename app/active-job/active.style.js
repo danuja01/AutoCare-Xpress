@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { FONT, SIZES } from "../../constants";
+import { COLORS, FONT, SIZES } from "../../constants";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -30,6 +30,26 @@ const styles = StyleSheet.create({
     fontSize: SIZES.large,
     fontFamily: FONT.semiBold,
     marginBottom: SIZES.medium,
+  },
+  noActiveContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noActiveTitle: {
+    fontSize: SIZES.xxLarge,
+    fontFamily: FONT.semiBold,
+  },
+  noActiveBtnContainer: {
+    backgroundColor: COLORS.primary,
+    padding: SIZES.medium,
+    borderRadius: SIZES.medium,
+    marginTop: SIZES.medium,
+  },
+  noActiveBtn: {
+    fontSize: SIZES.medium,
+    fontFamily: FONT.semiBold,
+    color: COLORS.white,
   },
 });
 
