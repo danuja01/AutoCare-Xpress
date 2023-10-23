@@ -13,19 +13,19 @@ const SelectCard = () => {
         holdersName: 'John Doe',
         cardNo: '1234 5678 9012 3456',
         cardType: 'Visa',
-      };
+    };
       
-      const sampleData2 = {
+    const sampleData2 = {
         holdersName: 'Jane Smith',
         cardNo: '9876 5432 1098 7654',
         cardType: 'Mastercard',
-      };
+    };
       
-      const sampleData3 = {
+    const sampleData3 = {
         holdersName: 'Alice Johnson',
         cardNo: '4567 8901 2345 6789',
         cardType: 'American Express',
-      };
+    };
 
     return(
         <View

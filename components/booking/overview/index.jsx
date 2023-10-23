@@ -28,7 +28,6 @@ const Overview = () => {
   
     const handleDateConfirm = (date) => {
       setSelectedDate(date.toISOString().split('T')[0]);
-      console.log(selectedDate);
       hideDatePicker();
     };
   
