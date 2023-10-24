@@ -1,3 +1,4 @@
+// ReviewPage Component
 import React, { useRef, useState, useEffect } from "react";
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity, TextInput } from "react-native";
 import RawBottomSheet from "react-native-raw-bottom-sheet";
@@ -84,14 +85,27 @@ const ReviewPage = () => {
   };
 
   const handleDeleteReview = (reviewId) => {
-    // Use the reviewId to update your state and remove the review from the list
     setReviews(reviews.filter(review => review.id !== reviewId));
     setTotalReviews(totalReviews - 1);
   };
 
+  const handleUpdateReview = async (updatedRating, updatedReview, reviewId) => {
+    try {
+      await update(ref(db, `reviews/${sid}/${reviewId}`), {
+        rating: updatedRating,
+        review: updatedReview,
+      });
+      console.log(`Review with ID ${reviewId} updated successfully.`);
+      console.log(rating)
+      console.log(review)
+    } catch (error) {
+      console.error(`Error updating review with ID ${reviewId}:`, error);
+    }
+  };
+
   return (
     <View style={styles.reviewPage}>
-          <Stack.Screen options={{ header: () => null }} />
+      <Stack.Screen options={{ header: () => null }} />
       <TouchableOpacity style={styles.buttonframeParent} onPress={() => refRBSheet.current.open()}>
         <Text style={styles.confirm}>Add Review</Text>
       </TouchableOpacity>
@@ -104,6 +118,7 @@ const ReviewPage = () => {
               reviewData={reviewData}
               onDelete={handleDeleteReview}
               deleteReview={deleteReview} 
+              onUpdate={handleUpdateReview}
             />
           ))}
         </View>

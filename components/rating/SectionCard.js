@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput } from "react-native";
 import { FontFamily, Color, Border, FontSize } from "../../assets/GlobalStyles";
-import DeletePopup from "../popup/popup"; // Import the new DeletePopup component
+import DeletePopup from "../popup/popup";
+import UpdatePopup from "../UpdatePopup/UpdatePopup";
+import Modal from 'react-native-modal';
 
-const SectionCard = ({ reviewData, onDelete, deleteReview }) => {
+const SectionCard = ({ reviewData, onDelete, deleteReview, onUpdate }) => {
   const stars = Array.from({ length: reviewData.rating }, (_, index) => index);
 
-  const [showDeletePopup, setShowDeletePopup] = useState(false); // Add state for the delete popup
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false);
+  const [updatedRating, setUpdatedRating] = useState(reviewData.rating);
+  const [updatedReview, setUpdatedReview] = useState(reviewData.review);
 
   const handleDelete = async () => {
     try {
@@ -14,6 +19,15 @@ const SectionCard = ({ reviewData, onDelete, deleteReview }) => {
       onDelete(reviewData.id);
     } catch (error) {
       console.error('Error deleting review:', error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      await onUpdate(updatedRating, updatedReview, reviewData.id);
+      setShowUpdatePopup(false);
+    } catch (error) {
+      console.error('Error updating review:', error);
     }
   };
 
@@ -34,9 +48,11 @@ const SectionCard = ({ reviewData, onDelete, deleteReview }) => {
             <Text style={[styles.oshadaThawalampola, styles.textTypo]}>
               Oshada Thawalampola
             </Text>
-            <TouchableOpacity onPress={() => setShowDeletePopup(true)}
-            style={[styles.deletebtn]}>
+            <TouchableOpacity onPress={() => setShowDeletePopup(true)} style={[styles.deletebtn]}>
               <Text style={[styles.deletetext]}>Delete</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowUpdatePopup(true)} style={[styles.updatebtn]}>
+              <Text style={[styles.updatetext]}>Update</Text>
             </TouchableOpacity>
             <Text style={[styles.text, styles.textTypo]}>{reviewData.addedDate}</Text>
           </View>
@@ -55,7 +71,6 @@ const SectionCard = ({ reviewData, onDelete, deleteReview }) => {
         </View>
       </View>
 
-      {/* Add the DeletePopup component */}
       {showDeletePopup && (
         <DeletePopup
           onDelete={async () => {
@@ -65,11 +80,46 @@ const SectionCard = ({ reviewData, onDelete, deleteReview }) => {
           onCancel={() => setShowDeletePopup(false)}
         />
       )}
+
+      <Modal isVisible={showUpdatePopup}>
+      <View style={styles.modalContainer}>
+        <UpdatePopup
+          onUpdate={handleUpdate}
+          onCancel={() => setShowUpdatePopup(false)}
+          currentRating={updatedRating}
+          currentReview={updatedReview}
+          setUpdatedRating={setUpdatedRating}
+          setUpdatedReview={setUpdatedReview}
+        />
+      </View>
+    </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  updatebtn:{
+    top: 120,
+    left: 20,
+    backgroundColor: "#023572",
+    borderRadius: 15,
+    alignItems: "center",
+    width: 70,
+    height: 30,
+  },
+  updatetext:{
+    fontSize: 12,
+    color: Color.colorWhitesmoke_100,
+    textAlign: "left",
+    fontFamily: FontFamily.interMedium,
+    fontWeight: "700",
+    top: 8,
+  },
   deletebtn:{
     top: 150,
     left: -60,
