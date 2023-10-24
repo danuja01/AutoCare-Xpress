@@ -42,13 +42,16 @@ const ReviewPage = () => {
       try {
         const reviewRef = ref(db, `reviews/${sid}`);
         const newReviewRef = push(reviewRef);
-
+  
         setRating(0);
         setReview("");
-
+  
+        const addedDate = new Date().toISOString(); // Get the current date in ISO format
+  
         update(newReviewRef, {
           rating: rating,
           review: review,
+          addedDate: addedDate, // Save the added date to the database
         });
       } catch (error) {
         console.error("Error:", error);

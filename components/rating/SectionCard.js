@@ -24,7 +24,7 @@ const SectionCard = ({ reviewData }) => {
             <Text style={[styles.oshadaThawalampola, styles.textTypo]}>
               Oshada Thawalampola
             </Text>
-            <Text style={[styles.text, styles.textTypo]}>2023/10/16</Text>
+            <Text style={[styles.text, styles.textTypo]}>{reviewData.addedDate}</Text>
           </View>
         </View>
         <Text style={[styles.loremIpsumDolor, styles.textTypo]}>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: FontFamily.interMedium,
     fontWeight: "500",
-    width: 44,
+    width: 46,
   },
   oshadaThawalampolaParent: {
     height: 24,
