@@ -1,9 +1,12 @@
-import * as React from "react";
-import { StyleSheet, View, Text, Image , TouchableOpacity} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { FontFamily, Color, Border, FontSize } from "../../assets/GlobalStyles";
+import DeletePopup from "../popup/popup"; // Import the new DeletePopup component
 
-const SectionCard = ({ reviewData , onDelete, deleteReview }) => {
+const SectionCard = ({ reviewData, onDelete, deleteReview }) => {
   const stars = Array.from({ length: reviewData.rating }, (_, index) => index);
+
+  const [showDeletePopup, setShowDeletePopup] = useState(false); // Add state for the delete popup
 
   const handleDelete = async () => {
     try {
@@ -17,9 +20,7 @@ const SectionCard = ({ reviewData , onDelete, deleteReview }) => {
   return (
     <View style={styles.groupParent}>
       <View style={styles.groupWrapper}>
-        <View style={styles.groupWrapper}>
-          <View style={styles.groupChild} />
-        </View>
+        <View style={styles.groupChild} />
       </View>
       <View style={styles.groupContainer}>
         <View style={styles.profilepicParent}>
@@ -33,8 +34,9 @@ const SectionCard = ({ reviewData , onDelete, deleteReview }) => {
             <Text style={[styles.oshadaThawalampola, styles.textTypo]}>
               Oshada Thawalampola
             </Text>
-            <TouchableOpacity onPress={handleDelete}>
-              <Text>Delete Review</Text>
+            <TouchableOpacity onPress={() => setShowDeletePopup(true)}
+            style={[styles.deletebtn]}>
+              <Text style={[styles.deletetext]}>Delete</Text>
             </TouchableOpacity>
             <Text style={[styles.text, styles.textTypo]}>{reviewData.addedDate}</Text>
           </View>
@@ -52,11 +54,39 @@ const SectionCard = ({ reviewData , onDelete, deleteReview }) => {
           ))}
         </View>
       </View>
+
+      {/* Add the DeletePopup component */}
+      {showDeletePopup && (
+        <DeletePopup
+          onDelete={async () => {
+            await handleDelete();
+            setShowDeletePopup(false);
+          }}
+          onCancel={() => setShowDeletePopup(false)}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  deletebtn:{
+    top: 150,
+    left: -60,
+    backgroundColor: "#023572",
+    borderRadius: 15,
+    alignItems: "center",
+    width: 70,
+    height: 30,
+  },
+  deletetext:{
+    fontSize: 12,
+    color: Color.colorWhitesmoke_100,
+    textAlign: "left",
+    fontFamily: FontFamily.interMedium,
+    fontWeight: "700",
+    top: 8,
+  },
   textTypo: {
     textAlign: "left",
     fontFamily: FontFamily.interMedium,
