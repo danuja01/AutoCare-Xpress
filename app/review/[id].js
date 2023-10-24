@@ -1,6 +1,13 @@
 // ReviewPage Component
 import React, { useRef, useState, useEffect } from "react";
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, TextInput } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import RawBottomSheet from "react-native-raw-bottom-sheet";
 import StarRating from "react-native-star-rating";
 import SectionCard from "../../components/rating/SectionCard";
@@ -9,7 +16,8 @@ import { FontFamily, Color, Border, FontSize } from "../../assets/GlobalStyles";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { db } from "../../firebase/config";
 import { ref, get, push, update } from "firebase/database";
-import { remove } from 'firebase/database';
+import { remove } from "firebase/database";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const ReviewPage = () => {
   const refRBSheet = useRef();
@@ -18,45 +26,48 @@ const ReviewPage = () => {
   const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
   const [totalReviews, setTotalReviews] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   const sid = params.id;
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const snapshot = await get(ref(db, `reviews/${sid}`));
-        if (snapshot.exists()) {
-          const reviewsData = snapshot.val();
-          const reviewsArray = Object.entries(reviewsData).map(([key, value]) => ({ ...value, id: key }));
-          setReviews(reviewsArray);
-          setTotalReviews(reviewsArray.length);
-        }
-      } catch (error) {
-        console.error("Error:", error);
+  const fetchReviews = async () => {
+    try {
+      const snapshot = await get(ref(db, `reviews/${sid}`));
+      if (snapshot.exists()) {
+        const reviewsData = snapshot.val();
+        const reviewsArray = Object.entries(reviewsData).map(
+          ([key, value]) => ({ ...value, id: key })
+        );
+        setReviews(reviewsArray);
+        setTotalReviews(reviewsArray.length);
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchReviews();
   }, [sid]);
-
 
   const handleConfirm = async () => {
     if (sid && rating && review) {
       try {
         const reviewRef = ref(db, `reviews/${sid}`);
         const newReviewRef = push(reviewRef);
-  
+
         setRating(0);
         setReview("");
-  
+
         const addedDate = new Date().toISOString(); // Get the current date in ISO format
-  
+
         await update(newReviewRef, {
           rating: rating,
           review: review,
           addedDate: addedDate,
+        }).then(() => {
+          fetchReviews();
         });
-  
       } catch (error) {
         console.error("Error:", error);
       }
@@ -69,13 +80,14 @@ const ReviewPage = () => {
       total += reviews[i].rating;
     }
     return (total / reviews.length).toFixed(1);
-  }
+  };
 
   const avgRating = calculateAverageRating();
 
   const deleteReview = async (reviewId) => {
     try {
       await remove(ref(db, `reviews/${sid}/${reviewId}`));
+
       console.log(`Review with ID ${reviewId} deleted successfully.`);
       console.log("Review ID:", reviewId);
       console.log(sid);
@@ -85,7 +97,7 @@ const ReviewPage = () => {
   };
 
   const handleDeleteReview = (reviewId) => {
-    setReviews(reviews.filter(review => review.id !== reviewId));
+    setReviews(reviews.filter((review) => review.id !== reviewId));
     setTotalReviews(totalReviews - 1);
   };
 
@@ -94,10 +106,12 @@ const ReviewPage = () => {
       await update(ref(db, `reviews/${sid}/${reviewId}`), {
         rating: updatedRating,
         review: updatedReview,
+      }).then(() => {
+        fetchReviews();
       });
       console.log(`Review with ID ${reviewId} updated successfully.`);
-      console.log(rating)
-      console.log(review)
+      console.log(rating);
+      console.log(review);
     } catch (error) {
       console.error(`Error updating review with ID ${reviewId}:`, error);
     }
@@ -106,18 +120,38 @@ const ReviewPage = () => {
   return (
     <View style={styles.reviewPage}>
       <Stack.Screen options={{ header: () => null }} />
-      <TouchableOpacity style={styles.buttonframeParent} onPress={() => refRBSheet.current.open()}>
+      <TouchableOpacity
+        style={styles.buttonframeParent}
+        onPress={() => refRBSheet.current.open()}
+      >
         <Text style={styles.confirm}>Add Review</Text>
       </TouchableOpacity>
 
-      <ScrollView style={styles.groupParent} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.frameScrollViewContent}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              fetchReviews();
+              setRefreshing(true);
+              setTimeout(() => {
+                setRefreshing(false);
+              }, 1000);
+            }}
+          />
+        }
+        style={styles.groupParent}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.frameScrollViewContent}
+      >
         <View style={styles.frameScrollViewContent}>
           {reviews.map((reviewData, index) => (
             <SectionCard
               key={index}
               reviewData={reviewData}
               onDelete={handleDeleteReview}
-              deleteReview={deleteReview} 
+              deleteReview={deleteReview}
               onUpdate={handleUpdateReview}
             />
           ))}
@@ -126,7 +160,9 @@ const ReviewPage = () => {
 
       <RawBottomSheet ref={refRBSheet} height={400} closeOnDragDown={true}>
         <View style={styles.sheetContent}>
-          <Text style={{ marginTop: 10, marginBottom: 5, fontWeight: 'bold' }}>Rate your experience:</Text>
+          <Text style={{ marginTop: 10, marginBottom: 5, fontWeight: "bold" }}>
+            Rate your experience:
+          </Text>
           <StarRating
             disabled={false}
             maxStars={5}
@@ -134,17 +170,22 @@ const ReviewPage = () => {
             selectedStar={(newRating) => {
               setRating(newRating);
             }}
-            fullStarColor={'#FFD700'}
+            fullStarColor={"#FFD700"}
             containerStyle={styles.starRating}
           />
-          <Text style={{ marginTop: 10, fontWeight: 'bold' }}>Write your review:</Text>
+          <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+            Write your review:
+          </Text>
           <TextInput
             style={styles.textInput}
             multiline={true}
             value={review}
             onChangeText={(text) => setReview(text)}
           />
-          <TouchableOpacity style={styles.buttonframeParent1} onPress={handleConfirm}>
+          <TouchableOpacity
+            style={styles.buttonframeParent1}
+            onPress={handleConfirm}
+          >
             <Text style={styles.confirm}>confirm</Text>
           </TouchableOpacity>
         </View>
@@ -155,7 +196,7 @@ const ReviewPage = () => {
       <View></View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   buttonframeParent: {
@@ -206,9 +247,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   textInput: {
-    width: '100%',
+    width: "100%",
     height: 100,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginTop: 10,
     padding: 8,
@@ -355,6 +396,7 @@ const styles = StyleSheet.create({
   groupParent: {
     top: 250,
     left: 35,
+    marginBottom: 240,
   },
 });
 
