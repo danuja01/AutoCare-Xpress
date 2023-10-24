@@ -6,15 +6,20 @@ import Home from "./home";
 import Active from "./active-job";
 import Account from "./account";
 import { Stack } from "expo-router";
-import Location from "./location";
 import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+//import AdminDashboard from "./admin-dashboard";
+//import ConfirmDelivery from "./confirm-delivery";
+//import AddDriverMain from "./add-driver";
+//import DriverReviewPage from "./driver-review" 
+//import DamageAssessment from "./damage-assessment";
+import Location from "./location";
 import PickupLocation from "./pickuplocation";
 import Serviceinfo from "./serviceinfo";
 import DriverLocation from "./driverlcoation";
 
 
-LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Tab = createBottomTabNavigator();
 
@@ -77,6 +82,20 @@ export default function Page() {
             ),
           }}
         />
+        {/* <Tab.Screen
+          name="AdminDashboard"
+          component={AdminDashboard}
+          options={{
+            tabBarLabel: "AdminDashboard",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        /> */}
       </Tab.Navigator>
     </View>
   );

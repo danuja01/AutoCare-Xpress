@@ -20,6 +20,7 @@ import { getDownloadURL, uploadBytes, ref as imgRef } from "firebase/storage";
 import { COLORS, FONT, SIZES } from "../../constants";
 import Spinner from "react-native-loading-spinner-overlay";
 
+
 const Account = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -157,6 +158,7 @@ const Account = () => {
   const removePackage = (index) => {
     const updatedPackages = packages.filter((pkg, i) => i !== index);
     setPackages(updatedPackages);
+
   };
 
   return (
