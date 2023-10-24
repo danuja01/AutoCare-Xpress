@@ -7,6 +7,15 @@ import Home from "./home";
 import Active from "./active-job";
 import Account from "./account";
 import { Stack } from "expo-router";
+import Location from "./location";
+import { LogBox } from 'react-native';
+import PickupLocation from "./pickuplocation";
+import Serviceinfo from "./serviceinfo";
+import DriverLocation from "./driverlcoation";
+
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +66,7 @@ export default function Page() {
         />
         <Tab.Screen
           name="Account"
-          component={Account}
+          component={DriverLocation}
           options={{
             tabBarLabel: "Account",
             tabBarIcon: ({ color, size }) => (
