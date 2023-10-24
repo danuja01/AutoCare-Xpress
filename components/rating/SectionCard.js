@@ -1,9 +1,18 @@
 import * as React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image , TouchableOpacity} from "react-native";
 import { FontFamily, Color, Border, FontSize } from "../../assets/GlobalStyles";
 
-const SectionCard = ({ reviewData }) => {
+const SectionCard = ({ reviewData , onDelete, deleteReview }) => {
   const stars = Array.from({ length: reviewData.rating }, (_, index) => index);
+
+  const handleDelete = async () => {
+    try {
+      await deleteReview(reviewData.id);
+      onDelete(reviewData.id);
+    } catch (error) {
+      console.error('Error deleting review:', error);
+    }
+  };
 
   return (
     <View style={styles.groupParent}>
@@ -24,6 +33,9 @@ const SectionCard = ({ reviewData }) => {
             <Text style={[styles.oshadaThawalampola, styles.textTypo]}>
               Oshada Thawalampola
             </Text>
+            <TouchableOpacity onPress={handleDelete}>
+              <Text>Delete Review</Text>
+            </TouchableOpacity>
             <Text style={[styles.text, styles.textTypo]}>{reviewData.addedDate}</Text>
           </View>
         </View>

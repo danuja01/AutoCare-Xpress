@@ -8,6 +8,7 @@ import { FontFamily, Color, Border, FontSize } from "../../assets/GlobalStyles";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { db } from "../../firebase/config";
 import { ref, get, push, update } from "firebase/database";
+import { remove } from 'firebase/database';
 
 const ReviewPage = () => {
   const refRBSheet = useRef();
@@ -25,7 +26,7 @@ const ReviewPage = () => {
         const snapshot = await get(ref(db, `reviews/${sid}`));
         if (snapshot.exists()) {
           const reviewsData = snapshot.val();
-          const reviewsArray = Object.values(reviewsData);
+          const reviewsArray = Object.entries(reviewsData).map(([key, value]) => ({ ...value, id: key }));
           setReviews(reviewsArray);
           setTotalReviews(reviewsArray.length);
         }
@@ -37,7 +38,8 @@ const ReviewPage = () => {
     fetchReviews();
   }, [sid]);
 
-  const handleConfirm = () => {
+
+  const handleConfirm = async () => {
     if (sid && rating && review) {
       try {
         const reviewRef = ref(db, `reviews/${sid}`);
@@ -48,11 +50,12 @@ const ReviewPage = () => {
   
         const addedDate = new Date().toISOString(); // Get the current date in ISO format
   
-        update(newReviewRef, {
+        await update(newReviewRef, {
           rating: rating,
           review: review,
-          addedDate: addedDate, // Save the added date to the database
+          addedDate: addedDate,
         });
+  
       } catch (error) {
         console.error("Error:", error);
       }
@@ -69,6 +72,23 @@ const ReviewPage = () => {
 
   const avgRating = calculateAverageRating();
 
+  const deleteReview = async (reviewId) => {
+    try {
+      await remove(ref(db, `reviews/${sid}/${reviewId}`));
+      console.log(`Review with ID ${reviewId} deleted successfully.`);
+      console.log("Review ID:", reviewId);
+      console.log(sid);
+    } catch (error) {
+      console.error(`Error deleting review with ID ${reviewId}:`, error);
+    }
+  };
+
+  const handleDeleteReview = (reviewId) => {
+    // Use the reviewId to update your state and remove the review from the list
+    setReviews(reviews.filter(review => review.id !== reviewId));
+    setTotalReviews(totalReviews - 1);
+  };
+
   return (
     <View style={styles.reviewPage}>
           <Stack.Screen options={{ header: () => null }} />
@@ -79,7 +99,12 @@ const ReviewPage = () => {
       <ScrollView style={styles.groupParent} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.frameScrollViewContent}>
         <View style={styles.frameScrollViewContent}>
           {reviews.map((reviewData, index) => (
-            <SectionCard key={index} reviewData={reviewData} />
+            <SectionCard
+              key={index}
+              reviewData={reviewData}
+              onDelete={handleDeleteReview}
+              deleteReview={deleteReview} 
+            />
           ))}
         </View>
       </ScrollView>
