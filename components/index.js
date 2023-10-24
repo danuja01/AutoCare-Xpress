@@ -11,15 +11,10 @@ import ActiveHeader from "./active/header";
 import DetailsPane from "./active/detail-pane";
 import CurrentStatus from "./active/current-status";
 import TrackingCard from "./active/tracking-card";
-import DriverDetailsPane from "./driver/driver-review-details";
-import FromClient from "./driver/confirm-delivery-fromClient";
-import ToClient from "./driver/confirm-delivery-toClient";
-import AddDriver from "./admin/add-driver";
 import SelectCard from "./booking/selectcard";
 import NewCard from "./booking/newCard";
 import DriverCard from "./common/cards/driver";
 import HistoryCard from "./common/cards/driverHistory";
-
 
 export {
   HomeHeader,
@@ -35,10 +30,6 @@ export {
   DetailsPane,
   CurrentStatus,
   TrackingCard,
-  DriverDetailsPane,
-  FromClient,
-  ToClient,
-  AddDriver,
   SelectCard,
   NewCard,
   DriverCard,
