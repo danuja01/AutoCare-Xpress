@@ -3,6 +3,7 @@ import { TouchableOpacity, Image, View, Text } from "react-native";
 
 import styles from "./header.style";
 import { SIZES } from "../../../constants";
+import { useRouter } from "expo-router";
 
 const HomeHeader = ({
   iconUrl,

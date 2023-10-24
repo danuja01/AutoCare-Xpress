@@ -22,12 +22,17 @@ import {
 } from "../../components";
 import { Alert } from "react-native";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "expo-router";
 
 const ServiceDesc = () => {
+  const router = useRouter();
+
   const params = useLocalSearchParams();
   const [serviceDetails, setServiceDetails] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [islLoading, setIsLoading] = useState(false);
+
+  const sid = params.id;
 
   const fetchDetails = async () => {
     setIsLoading(true);
@@ -93,7 +98,7 @@ const ServiceDesc = () => {
             imageUrl={serviceDetails.imageUrl}
           />
         )}
-        <RatingPanel rating={4.5} totalRatings={143} />
+        <RatingPanel rating={4.5} totalRatings={143} serviceid = {sid}/>
         <View style={styles.optionContainer}>
           {serviceDetails && (
             <Dropdown
@@ -108,7 +113,7 @@ const ServiceDesc = () => {
           <TouchableOpacity
             style={styles.confirmBtnContainer}
             onPress={() => {
-              alert("Confirm");
+              router.push(`/location`)
             }}
           >
             <LinearGradient
