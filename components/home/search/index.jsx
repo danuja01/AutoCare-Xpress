@@ -20,6 +20,7 @@ const Search = () => {
             style={styles.searchInput}
             onChange={() => {}}
             placeholder="What are you lokking for?"
+            placeholderTextColor={COLORS.mediumGray}
           />
         </View>
         <TouchableOpacity

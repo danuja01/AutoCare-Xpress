@@ -2,6 +2,9 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { useCallback, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { View } from "react-native";
+import { Text } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 SplashScreen.preventAutoHideAsync();
 
