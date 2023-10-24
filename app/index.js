@@ -2,7 +2,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { View, Text } from "react-native";
-
 import Home from "./home";
 import Active from "./active-job";
 import Account from "./account";
@@ -15,6 +14,12 @@ LogBox.ignoreAllLogs();//Ignore all log notifications
 //import AddDriverMain from "./add-driver";
 //import DriverReviewPage from "./driver-review" 
 //import DamageAssessment from "./damage-assessment";
+import Location from "./location";
+import PickupLocation from "./pickuplocation";
+import Serviceinfo from "./serviceinfo";
+import DriverLocation from "./driverlcoation";
+
+
 
 const Tab = createBottomTabNavigator();
 
@@ -65,7 +70,7 @@ export default function Page() {
         />
         <Tab.Screen
           name="Account"
-          component={Account}
+          component={DriverLocation}
           options={{
             tabBarLabel: "Account",
             tabBarIcon: ({ color, size }) => (
@@ -78,10 +83,10 @@ export default function Page() {
           }}
         />
         {/* <Tab.Screen
-          name="DamageAssessment"
-          component={DamageAssessment}
+          name="AdminDashboard"
+          component={AdminDashboard}
           options={{
-            tabBarLabel: "DamageAssessment",
+            tabBarLabel: "AdminDashboard",
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="account"
