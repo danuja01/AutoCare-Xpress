@@ -70,7 +70,7 @@ const ToClient = () => {
 
 const styles = StyleSheet.create({
   fromClient: {
-    backgroundColor: "#e5ecf3",
+    backgroundColor: "#eae9ee",
     flex: 1,
     width: "100%",
     height: 852,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.medium,
   },
   fromTypo: {
-    fontFamily: FontFamily.plusJakartaSansSemiBold,
+    fontFamily: FONT.semiBold,
     fontSize: FontSize.iOSMediumBody_size,
     textAlign: "right",
     color: Color.iOS000000,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   },
   toTypo: {
     height: 46,
-    fontFamily: FontFamily.plusJakartaSansSemiBold,
+    fontFamily: FONT.semiBold,
     fontSize: FontSize.iOSMediumBody_size,
     textAlign: "left",
     color: Color.iOS000000,
@@ -170,11 +170,11 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   confirmDeliveryCompletion: {
-    top: "20%",
-    left: "24%",
-    right: "24%",
+    top: "18%",
+    left: "20%",
+    right: "20%",
     fontSize: 24,
-    width: "52%",
+    width: "60%",
     textAlign: "center",
     color: Color.iOS000000,
     fontFamily: FontFamily.interSemiBold,

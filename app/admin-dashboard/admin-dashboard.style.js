@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { FONT, SIZES } from "../../constants";
+import { COLORS, FONT, SIZES } from "../../constants";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -48,11 +48,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   dashboard: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 28,
+    fontFamily: FONT.bold,
     textAlign: "center",
-    color: "white",
-    top: 48,
+    color: COLORS.primary,
+    top: 45,
+    marginBottom:20,
   },
 });
 

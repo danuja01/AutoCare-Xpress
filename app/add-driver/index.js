@@ -16,9 +16,10 @@ import { Stack } from "expo-router";
 import { FONT, SIZES } from "../../constants";
 import { AddDriver, BackNavBtn } from "../../components";
 
-const ConfirmDelivery = () => {
+const AddDriverMain = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
+      <Stack.Screen options={{ header: () => null }} />
       <ScrollView style={styles.container}>
         {/* <BackNavBtn /> */}
         <AddDriver />
@@ -29,4 +30,4 @@ const ConfirmDelivery = () => {
 
 const styles = StyleSheet.create({});
 
-export default ConfirmDelivery;
+export default AddDriverMain;

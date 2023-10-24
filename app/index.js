@@ -7,6 +7,14 @@ import Home from "./home";
 import Active from "./active-job";
 import Account from "./account";
 import { Stack } from "expo-router";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+//import AdminDashboard from "./admin-dashboard";
+//import ConfirmDelivery from "./confirm-delivery";
+//import AddDriverMain from "./add-driver";
+//import DriverReviewPage from "./driver-review" 
+//import DamageAssessment from "./damage-assessment";
 
 const Tab = createBottomTabNavigator();
 
@@ -69,6 +77,20 @@ export default function Page() {
             ),
           }}
         />
+        {/* <Tab.Screen
+          name="DamageAssessment"
+          component={DamageAssessment}
+          options={{
+            tabBarLabel: "DamageAssessment",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        /> */}
       </Tab.Navigator>
     </View>
   );

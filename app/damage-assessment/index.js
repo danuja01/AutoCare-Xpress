@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -13,22 +13,75 @@ import {
 import { Image } from "expo-image";
 //import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../../GlobalStyles.js";
-import { COLORS } from "../../constants";
+import { COLORS, FONT, SIZES } from "../../constants";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { db, storage } from "../../firebase/config";
+import { ref, set, push } from "firebase/database";
+import { getDownloadURL, uploadBytes, ref as imgRef } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
 
 const DamageAssessment = () => {
-  //const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+  const params = useLocalSearchParams();
+  const [performedBy, setPerformedBy] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
 
-  const onDoneClick = useCallback(() => {
-    Alert.alert("Are you sure?", "Are you sure?", [
-      {
-        text: "Confirm",
-        onPress: () => console.log("Confirm pressed"),
-      },
-    ]);
-  }, []);
+  const handleImageSelection = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const response = await fetch(result.assets[0].uri);
+      const blob = await response.blob();
+      setImage(blob);
+    } else {
+      console.log("Image not selected");
+    }
+  };
+
+  const handleDoneClick = async () => {
+    if (!performedBy || !description) {
+      Alert.alert("Error", "Please fill all the fields");
+      return;
+    }
+    if (!image) {
+      Alert.alert("Error", "Please add an image");
+      return;
+    }
+
+    try {
+      const assessmentRef = ref(db, `damage-assessments/`);
+      const newAssessmentRef = push(assessmentRef);
+
+      const storageRef = imgRef(storage, `images/.png`);
+      const uploadTask = await uploadBytes(storageRef, image);
+      const snapshot = await uploadTask;
+      const imageUrl = await getDownloadURL(storageRef);
+
+      const dataObject = {
+        performedBy: performedBy,
+        description: description,
+        timestamp: new Date().toISOString(),
+        imageUrl: imageUrl,
+      };
+
+      await set(newAssessmentRef, dataObject);
+
+      Alert.alert("Success", "Damage Assessment data added successfully");
+      setPerformedBy("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
+      <Stack.Screen options={{ header: () => null }} />
       <ScrollView style={styles.container}>
         <View style={styles.damageAssessment}>
           <TouchableOpacity
@@ -59,7 +112,7 @@ const DamageAssessment = () => {
           <TouchableOpacity
             style={styles.done}
             activeOpacity={0.2}
-            onPress={onDoneClick}
+            onPress={handleDoneClick}
           >
             <Text style={styles.done1Typo}>Done</Text>
           </TouchableOpacity>
@@ -70,6 +123,7 @@ const DamageAssessment = () => {
             style={[styles.clickHereTo1, styles.clickTypo]}
             placeholder="Click here to type . . ."
             placeholderTextColor="#a4a5aa"
+            onChangeText={(text) => setPerformedBy(text)}
           />
           <Text style={styles.damageAssessment1}>Damage Assessment</Text>
           <Text style={[styles.vehicleNo, styles.cbh7532Typo]}>
@@ -81,7 +135,19 @@ const DamageAssessment = () => {
             placeholder="Click here to type . . ."
             multiline={true}
             placeholderTextColor="#a4a5aa"
+            onChangeText={(text) => setDescription(text)}
           />
+          <View>
+            <TouchableOpacity
+              style={[styles.button, styles.imgBtn]}
+              onPress={handleImageSelection}
+            >
+              <Text>Select Image</Text>
+              <Text style={styles.imgThumb(image)}>
+                {image ? "Image Selected" : "No Image Selected"}
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View style={[styles.lineView, styles.damageLayout]} />
         </View>
       </ScrollView>
@@ -240,6 +306,27 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
   },
+  button: {
+    backgroundColor: COLORS.white,
+    padding: SIZES.medium,
+    borderRadius: SIZES.medium,
+    alignItems: "center",
+    marginBottom: SIZES.medium,
+    top:"170%",
+    width: "85%",
+    left: "40%",
+    //right: "5%",
+  },
+  imgBtn: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: SIZES.large,
+  },
+  imgThumb: (image) => ({
+    color: image ? COLORS.primary : COLORS.red,
+    fontSize: SIZES.small,
+  }),
 });
 
 export default DamageAssessment;

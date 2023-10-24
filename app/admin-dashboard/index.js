@@ -10,21 +10,30 @@ import {
 import styles from "./admin-dashboard.style";
 import { COLORS } from "../../constants";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
+import { Stack } from "expo-router";
 
 const AdminDashboard = () => {
+
+  const navigation = useNavigation()
   const handleButtonPress = () => {
     console.log("Button Pressed");
+  };
+  
+  const handleButtonPressAddDriver = () => {
+    navigation.navigate("/AddDriverMain");
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
-      <View style={styles.frameChildPosition}>
+      <Stack.Screen options={{ header: () => null }} />
+      {/* <View style={styles.frameChildPosition}>
         <LinearGradient
           style={[styles.frameChild, styles.frameChildPosition]}
           locations={[0, 1]}
           colors={["#023572", "#012550"]}
         />
-      </View>
+      </View> */}
       <View>
         <Text style={styles.dashboard}>Admin Dashboard</Text>
       </View>
@@ -68,7 +77,7 @@ const AdminDashboard = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+          <TouchableOpacity style={styles.button} onPress={handleButtonPressAddDriver}>
             <Image
               style={styles.image}
               source={require("../../assets/images/rectangle-30.png")}
