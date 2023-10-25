@@ -28,7 +28,6 @@ const Overview = () => {
   
     const handleDateConfirm = (date) => {
       setSelectedDate(date.toISOString().split('T')[0]);
-      console.log(selectedDate);
       hideDatePicker();
     };
   
@@ -87,7 +86,7 @@ const Overview = () => {
                 width: 100,
             },
             container: {
-                backgroundColor: "#F3F4F8",
+                backgroundColor: "#E6E8F0",
                 borderRadius: 24,
             },
             }}
