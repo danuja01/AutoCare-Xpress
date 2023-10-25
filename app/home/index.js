@@ -69,7 +69,6 @@ export default Home = () => {
       <Stack.Screen options={{ header: () => null }} />
       <Spinner visible={isLoading} textStyle={{ color: COLORS.white }} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Newpop />
         <HomeHeader
           iconUrl={require("../../assets/images/user.png")}
           dimension={SIZES.xxxLarge * 1.15}
