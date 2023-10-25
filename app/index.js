@@ -11,6 +11,7 @@ import { LogBox } from 'react-native';
 import PickupLocation from "./pickuplocation";
 import Serviceinfo from "./serviceinfo";
 import DriverLocation from "./driverlcoation";
+import ServicesList from "./servicesList";
 
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -51,7 +52,7 @@ export default function Page() {
         />
         <Tab.Screen
           name="Active"
-          component={Active}
+          component={ServicesList}
           options={{
             tabBarLabel: "Active",
             tabBarIcon: ({ color, size }) => (

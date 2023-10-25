@@ -15,6 +15,7 @@ import SelectCard from "./booking/selectcard";
 import NewCard from "./booking/newCard";
 import DriverCard from "./common/cards/driver";
 import HistoryCard from "./common/cards/driverHistory";
+import JobDetailsCard from "./common/cards/jobDetails";
 
 export {
   HomeHeader,
@@ -33,5 +34,6 @@ export {
   SelectCard,
   NewCard,
   DriverCard,
-  HistoryCard
+  HistoryCard,
+  JobDetailsCard
 };
