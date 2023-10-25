@@ -3,7 +3,6 @@ import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import RBSheet from "@nonam4/react-native-bottom-sheet";
 import { TextInput } from "react-native-gesture-handler";
 import { COLORS } from "../../../constants";
-import { CheckBox } from 'react-native-elements';
  
 
 const NewCard = () => {
@@ -105,12 +104,6 @@ const NewCard = () => {
                             </View>
                         </View> 
                         <View>
-                            <CheckBox
-                                style={[ styles.checkBox]}
-                                title='Remeber For Future'
-                                checked={checked}
-                                onPress={() => setChecked(!checked)}
-                            />
                         </View>
                     </View>
                     <TouchableOpacity>

@@ -7,7 +7,8 @@ import { Border, FontSize, FontFamily, Color } from "../../assets/GlobalStyles";
 import { Device } from 'expo-device';
 import { Stack } from "expo-router";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, watchPositionAsync, Accuracy } from "expo-location";
-
+import RawBottomSheet from "react-native-raw-bottom-sheet";
+import { COLORS } from "../../constants";
 
 const BookingPlacePageClosedPo = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -16,8 +17,25 @@ const BookingPlacePageClosedPo = () => {
   const [distance, setDistance] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  
+
+  const [holdersName, setholdersName] = useState('');
+  const [cardNumber, setcardNumber] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
+  const [cvv, setCVV] = useState('');
+  const [save, setSave] = useState('');
+  const [checked, setChecked] = useState(false);
+
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const refRBSheet = useRef();
+
   const mapViewRef = useRef(null);
+
+  const handleConfirmClick = () => {
+    setIsBottomSheetVisible(false);
+    refRBSheet.current.open();
+  };
+
 
   useEffect(() => {
     (async () => {
@@ -178,7 +196,73 @@ const BookingPlacePageClosedPo = () => {
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
-      <ConfirmForm />
+      <ConfirmForm onConfirmClick={handleConfirmClick} />
+      <RawBottomSheet ref={refRBSheet} height={400} closeOnDragDown={true}>
+        
+
+      <View style={{
+                    flex: 1
+                }}>
+                    <View>
+                        <View>
+                            <Text style={styles.headingText}>Card Holder Name</Text>
+                            <TextInput
+                                placeholder="John Doe"
+                                value={holdersName}
+                                style={[styles.formCommon]}
+                                placeholderTextColor="#A4A5AA"
+                            />
+                            <Text style={styles.headingText}>Card Number</Text>
+                            <TextInput
+                                placeholder="Visa / Master"
+                                value={cardNumber}
+                                style={[styles.formCommon, styles.btn]}
+                                placeholderTextColor="#A4A5AA"
+                            />
+                        </View>
+                        <View style={[styles.rows]}>
+                            <View style={[styles.inputs]}>
+                                <Text style={[styles.headingText]}>Month</Text>
+                                <TextInput
+                                    placeholder="MM"
+                                    value={cardNumber}
+                                    style={[styles.formCommon, styles.btn]}
+                                    placeholderTextColor="#A4A5AA"
+                                />
+                            </View>
+                            <View style={[styles.inputs]}>
+                                <Text style={styles.headingText}>Year</Text>
+                                <TextInput
+                                    placeholder="YY"
+                                    value={cardNumber}
+                                    style={[styles.formCommon, styles.btn]}
+                                    placeholderTextColor="#A4A5AA"
+                                />
+                            </View>
+                            <View style={[styles.inputs]}>
+                                <Text style={styles.headingText}>CVV</Text>
+                                <TextInput
+                                    placeholder="CVV"
+                                    value={cardNumber}
+                                    style={[styles.formCommon, styles.btn]}
+                                    placeholderTextColor="#A4A5AA"
+                                />
+                            </View>
+                        </View> 
+                        <View>
+                        </View>
+                    </View>
+                    <TouchableOpacity>
+                        <View style={[styles.sbmtBtn]}>
+                            <View style={[styles.sbmtBtnView]}>
+                                <Text style={[styles.bookNowSize, styles.sbmtBtnText]}>ADD CARD</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
+      </RawBottomSheet>
+      {isBottomSheetVisible && refRBSheet.current.open()}
       <View style={styles.distanceContainer}>
       {distance !== null && (
         <Text style={styles.distanceText}>
@@ -191,6 +275,54 @@ const BookingPlacePageClosedPo = () => {
 };
 
 const styles = StyleSheet.create({
+  inputs: {
+    flex: 1,
+},
+formCommon: {
+    height: 40,
+    borderColor: '#A4A5AA',
+    borderWidth: 1,
+    borderRadius: 10,
+    color: '#000000',
+    paddingLeft: 10,
+    margin: 10
+},
+rows: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 3,
+},
+overview: {
+    fontWeight: 600
+},
+headingText: {
+    color: "#000000",
+    marginLeft: 12,
+},
+btnText: {
+    color: "#666666"
+},
+btn: {
+    justifyContent: "center",
+    alignItems: "center",
+},
+sbmtBtn: {
+    flexDirection: 'row',
+    margin: 10,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: COLORS.primary
+},
+sbmtBtnView: {
+    margin: 10,
+},
+sbmtBtnText: {
+    color: COLORS.white
+},
+checkBox:{
+    borderRadius: 10,
+},
   distanceText: {
     color: 'black', // Change the color of the text if needed
     fontSize: FontSize.size_base,

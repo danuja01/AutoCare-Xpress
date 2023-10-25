@@ -9,10 +9,12 @@ import {
   Search,
   OfficialDealers,
   ServiceCenters,
+  NewCard,
 } from "../../components";
 
 import { ref, onValue } from "firebase/database";
 import { db } from "../../firebase/config";
+import Newpop from "../../components/booking/newCard/index"
 
 export default Home = () => {
   const [serviceStaions, setServiceStaions] = useState([]);
@@ -67,6 +69,7 @@ export default Home = () => {
       <Stack.Screen options={{ header: () => null }} />
       <Spinner visible={isLoading} textStyle={{ color: COLORS.white }} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <Newpop />
         <HomeHeader
           iconUrl={require("../../assets/images/user.png")}
           dimension={SIZES.xxxLarge * 1.15}

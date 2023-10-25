@@ -3,7 +3,7 @@ import { View, StyleSheet, Text , TouchableOpacity , TextInput , KeyboardAvoidin
 import { Image } from "expo-image";
 import { FontSize, FontFamily, Border, Color } from "../../assets/GlobalStyles";
 
-const ConfirmForm = () => {
+const ConfirmForm = ({ onConfirmClick }) => {
   const [searchLocation, setSearchLocation] = useState("");
   
   return (
@@ -11,7 +11,8 @@ const ConfirmForm = () => {
         <TouchableOpacity
           style={styles.buttonframeParent}
           onPress={() => {
-          }}
+          onConfirmClick(); // Call the function from the parent component
+        }}
         >
           <Image
             style={styles.buttonframeIcon}
