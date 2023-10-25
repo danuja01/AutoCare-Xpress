@@ -9,6 +9,9 @@ import { Stack } from "expo-router";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, watchPositionAsync, Accuracy } from "expo-location";
 import RawBottomSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../../constants";
+import { db } from "../../firebase/config";
+import { ref, get, push, update } from "firebase/database";
+import { remove } from "firebase/database";
 
 const BookingPlacePageClosedPo = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -30,6 +33,28 @@ const BookingPlacePageClosedPo = () => {
   const refRBSheet = useRef();
 
   const mapViewRef = useRef(null);
+
+  const handleSaveCard = async () => {
+    try {
+      const paymentData = {
+        holdersName,
+        cardNumber,
+        month,
+        year,
+        cvv,
+      };
+  
+      const paymentRef = ref(db, "payment"); // Assuming "payment" is the collection name
+  
+      await push(paymentRef, paymentData).then((docRef) => {
+        console.log("Document written with ID: ", docRef.key);
+        alert("Card data saved successfully!");
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Error occurred while saving card data.");
+    }
+  };
 
   const handleConfirmClick = () => {
     setIsBottomSheetVisible(false);
@@ -204,61 +229,64 @@ const BookingPlacePageClosedPo = () => {
                     flex: 1
                 }}>
                     <View>
-                        <View>
-                            <Text style={styles.headingText}>Card Holder Name</Text>
-                            <TextInput
-                                placeholder="John Doe"
-                                value={holdersName}
-                                style={[styles.formCommon]}
-                                placeholderTextColor="#A4A5AA"
-                            />
-                            <Text style={styles.headingText}>Card Number</Text>
-                            <TextInput
-                                placeholder="Visa / Master"
-                                value={cardNumber}
-                                style={[styles.formCommon, styles.btn]}
-                                placeholderTextColor="#A4A5AA"
-                            />
-                        </View>
-                        <View style={[styles.rows]}>
-                            <View style={[styles.inputs]}>
-                                <Text style={[styles.headingText]}>Month</Text>
-                                <TextInput
-                                    placeholder="MM"
-                                    value={cardNumber}
-                                    style={[styles.formCommon, styles.btn]}
-                                    placeholderTextColor="#A4A5AA"
-                                />
-                            </View>
-                            <View style={[styles.inputs]}>
-                                <Text style={styles.headingText}>Year</Text>
-                                <TextInput
-                                    placeholder="YY"
-                                    value={cardNumber}
-                                    style={[styles.formCommon, styles.btn]}
-                                    placeholderTextColor="#A4A5AA"
-                                />
-                            </View>
-                            <View style={[styles.inputs]}>
-                                <Text style={styles.headingText}>CVV</Text>
-                                <TextInput
-                                    placeholder="CVV"
-                                    value={cardNumber}
-                                    style={[styles.formCommon, styles.btn]}
-                                    placeholderTextColor="#A4A5AA"
-                                />
-                            </View>
-                        </View> 
-                        <View>
-                        </View>
+                    <View>
+                      <Text style={styles.headingText}>Card Holder Name</Text>
+                      <TextInput
+                        placeholder="John Doe"
+                        value={holdersName}
+                        onChangeText={(text) => setholdersName(text)} // Update the state on change
+                        style={[styles.formCommon]}
+                        placeholderTextColor="#A4A5AA"
+                      />
+                      <Text style={styles.headingText}>Card Number</Text>
+                      <TextInput
+                        placeholder="Visa / Master"
+                        value={cardNumber}
+                        onChangeText={(text) => setcardNumber(text)}
+                        style={[styles.formCommon, styles.btn]}
+                        placeholderTextColor="#A4A5AA"
+                      />
                     </View>
-                    <TouchableOpacity>
-                        <View style={[styles.sbmtBtn]}>
-                            <View style={[styles.sbmtBtnView]}>
-                                <Text style={[styles.bookNowSize, styles.sbmtBtnText]}>ADD CARD</Text>
-                            </View>
+                    <View style={[styles.rows]}>
+                      <View style={[styles.inputs]}>
+                        <Text style={[styles.headingText]}>Month</Text>
+                        <TextInput
+                          placeholder="MM"
+                          value={month}
+                          onChangeText={(text) => setMonth(text)}
+                          style={[styles.formCommon, styles.btn]}
+                          placeholderTextColor="#A4A5AA"
+                        />
+                      </View>
+                      <View style={[styles.inputs]}>
+                        <Text style={styles.headingText}>Year</Text>
+                        <TextInput
+                          placeholder="YY"
+                          value={year}
+                          onChangeText={(text) => setYear(text)}
+                          style={[styles.formCommon, styles.btn]}
+                          placeholderTextColor="#A4A5AA"
+                        />
+                      </View>
+                      <View style={[styles.inputs]}>
+                        <Text style={styles.headingText}>CVV</Text>
+                        <TextInput
+                          placeholder="CVV"
+                          value={cvv}
+                          onChangeText={(text) => setCVV(text)}
+                          style={[styles.formCommon, styles.btn]}
+                          placeholderTextColor="#A4A5AA"
+                        />
+                      </View>
+                    </View>
+                    <TouchableOpacity onPress={handleSaveCard}>
+                      <View style={[styles.sbmtBtn]}>
+                        <View style={[styles.sbmtBtnView]}>
+                          <Text style={[styles.bookNowSize, styles.sbmtBtnText]}>ADD CARD</Text>
                         </View>
+                      </View>
                     </TouchableOpacity>
+                    </View>
                 </View>
 
       </RawBottomSheet>
