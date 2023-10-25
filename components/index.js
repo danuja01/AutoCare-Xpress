@@ -15,6 +15,10 @@ import SelectCard from "./booking/selectcard";
 import NewCard from "./booking/newCard";
 import DriverCard from "./common/cards/driver";
 import HistoryCard from "./common/cards/driverHistory";
+import DriverDetailsPane from "./driver/driver-review-details";
+import FromClient from "./driver/confirm-delivery-fromClient";
+import ToClient from "./driver/confirm-delivery-toClient";
+import AddDriver from "./admin/add-driver";
 
 export {
   HomeHeader,
@@ -33,5 +37,9 @@ export {
   SelectCard,
   NewCard,
   DriverCard,
-  HistoryCard
+  HistoryCard,
+  DriverDetailsPane,
+  FromClient,
+  ToClient,
+  AddDriver
 };
