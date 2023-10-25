@@ -5,13 +5,14 @@ import { Image, StyleSheet, View, Text, TextInput, TouchableOpacity } from "reac
 import ConfirmForm from "../../components/location/ConfirmForm";
 import { Border, FontSize, FontFamily, Color } from "../../assets/GlobalStyles";
 import { Device } from 'expo-device';
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, watchPositionAsync, Accuracy } from "expo-location";
 import RawBottomSheet from "react-native-raw-bottom-sheet";
 import { COLORS } from "../../constants";
 import { db } from "../../firebase/config";
 import { ref, get, push, update } from "firebase/database";
 import { remove } from "firebase/database";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const BookingPlacePageClosedPo = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -21,6 +22,8 @@ const BookingPlacePageClosedPo = () => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
+  const params = useLocalSearchParams();
+
   const [holdersName, setholdersName] = useState('');
   const [cardNumber, setcardNumber] = useState('');
   const [month, setMonth] = useState('');
@@ -29,12 +32,76 @@ const BookingPlacePageClosedPo = () => {
   const [save, setSave] = useState('');
   const [checked, setChecked] = useState(false);
 
+  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [selectLocation, setLocation] = useState('');
+  const [fairAmount, setFairAmount] = useState(1200);// 1200 is a given default value write a function
+  const [vehicleNo, setvehicleNo] = useState('');
+
+  const serviceid = params.id;
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisible(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisible(false);
+  };
+
+  const handleDateConfirm = (date) => {
+    setSelectedDate(date.toISOString().split('T')[0]);
+    hideDatePicker();
+  };
+
+  const showTimePicker = () => {
+    setTimePickerVisible(true);
+  };
+
+  const hideTimePicker = () => {
+    setTimePickerVisible(false);
+  };
+
+  const handleTimeConfirm = (time) => {
+      const date = new Date(time); // Convert to Date object
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+      // Convert hours to 12-hour format
+      const formattedHours = hours % 12 || 12;
+    
+      // Zero-pad minutes
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    
+      const formattedTime = `${formattedHours}:${formattedMinutes} ${ampm}`;
+      setSelectedTime(formattedTime);
+      hideTimePicker();
+    };
+
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [isBottomSheetVisible1, setIsBottomSheetVisible1] = useState(false);
   const refRBSheet = useRef();
+  const refRBSheet1 = useRef();
 
   const mapViewRef = useRef(null);
 
-  const handleSaveCard = async () => {
+  const handleConfirmClick = () => {
+    setIsBottomSheetVisible(false);
+    refRBSheet.current.open();
+  };
+
+  const handleBookNowClick = async () => {
+    setIsBottomSheetVisible1(false);
+    refRBSheet1.current.open(); // Open the RawBottomSheet
+  
     try {
       const paymentData = {
         holdersName,
@@ -42,24 +109,24 @@ const BookingPlacePageClosedPo = () => {
         month,
         year,
         cvv,
+        selectedDate,
+        selectedTime,
+        selectLocation, // Replace with the actual variable holding pickup location
+        vehicleNo, // Replace with the actual variable holding vehicle number
+        selectedOption,
+        fairAmount
       };
   
-      const paymentRef = ref(db, "payment"); // Assuming "payment" is the collection name
+      const paymentRef = ref(db, `booking/${serviceid}`); // Assuming "payments" is the collection name
   
-      await push(paymentRef, paymentData).then((docRef) => {
-        console.log("Document written with ID: ", docRef.key);
-        alert("Card data saved successfully!");
-      });
+      const docRef = await push(paymentRef, paymentData);
+      console.log("Document written with ID: ", docRef.key);
     } catch (error) {
       console.error("Error adding document: ", error);
-      alert("Error occurred while saving card data.");
+      alert("Error occurred while saving payment data.");
     }
   };
-
-  const handleConfirmClick = () => {
-    setIsBottomSheetVisible(false);
-    refRBSheet.current.open();
-  };
+  
 
 
   useEffect(() => {
@@ -222,72 +289,98 @@ const BookingPlacePageClosedPo = () => {
         </TouchableOpacity>
       </View>
       <ConfirmForm onConfirmClick={handleConfirmClick} />
-      <RawBottomSheet ref={refRBSheet} height={400} closeOnDragDown={true}>
-        
+      <RawBottomSheet ref={refRBSheet} height={450} closeOnDragDown={true}>
+
 
       <View style={{
-                    flex: 1
-                }}>
-                    <View>
-                    <View>
-                      <Text style={styles.headingText}>Card Holder Name</Text>
-                      <TextInput
-                        placeholder="John Doe"
-                        value={holdersName}
-                        onChangeText={(text) => setholdersName(text)} // Update the state on change
-                        style={[styles.formCommon]}
-                        placeholderTextColor="#A4A5AA"
-                      />
-                      <Text style={styles.headingText}>Card Number</Text>
-                      <TextInput
-                        placeholder="Visa / Master"
-                        value={cardNumber}
-                        onChangeText={(text) => setcardNumber(text)}
-                        style={[styles.formCommon, styles.btn]}
-                        placeholderTextColor="#A4A5AA"
-                      />
-                    </View>
-                    <View style={[styles.rows]}>
-                      <View style={[styles.inputs]}>
-                        <Text style={[styles.headingText]}>Month</Text>
-                        <TextInput
-                          placeholder="MM"
-                          value={month}
-                          onChangeText={(text) => setMonth(text)}
-                          style={[styles.formCommon, styles.btn]}
-                          placeholderTextColor="#A4A5AA"
-                        />
-                      </View>
-                      <View style={[styles.inputs]}>
-                        <Text style={styles.headingText}>Year</Text>
-                        <TextInput
-                          placeholder="YY"
-                          value={year}
-                          onChangeText={(text) => setYear(text)}
-                          style={[styles.formCommon, styles.btn]}
-                          placeholderTextColor="#A4A5AA"
-                        />
-                      </View>
-                      <View style={[styles.inputs]}>
-                        <Text style={styles.headingText}>CVV</Text>
-                        <TextInput
-                          placeholder="CVV"
-                          value={cvv}
-                          onChangeText={(text) => setCVV(text)}
-                          style={[styles.formCommon, styles.btn]}
-                          placeholderTextColor="#A4A5AA"
-                        />
-                      </View>
-                    </View>
-                    <TouchableOpacity onPress={handleSaveCard}>
-                      <View style={[styles.sbmtBtn]}>
-                        <View style={[styles.sbmtBtnView]}>
-                          <Text style={[styles.bookNowSize, styles.sbmtBtnText]}>ADD CARD</Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                    </View>
+            flex: 1
+        }}>
+            <Text style={[styles.headingText, styles.overview]}>Overview</Text>
+            <View style={styles.rows}>
+                <TextInput
+                    placeholder="Date"
+                    value={selectedDate}
+                    editable={false}
+                    onTouchStart={showDatePicker}
+                    style={[styles.formCommon, styles.inputs]}
+                    placeholderTextColor="#A4A5AA"
+                />
+                <TextInput
+                    placeholder="Time"
+                    value={selectedTime}
+                    editable={false}
+                    onTouchStart={showTimePicker}
+                    style={[styles.formCommon, styles.btn, styles.inputs]}
+                    placeholderTextColor="#A4A5AA"
+                />
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleDateConfirm}
+                    onCancel={hideDatePicker}
+                />
+                <DateTimePickerModal
+                    isVisible={isTimePickerVisible}
+                    mode="time"
+                    onConfirm={handleTimeConfirm}
+                    onCancel={hideTimePicker}
+                />
+            </View>
+            <Text style={styles.headingText}>Pick-up location</Text>
+            <TextInput style={styles.formCommon}
+                placeholder="Pickup Location"
+                placeholderTextColor="#A4A5AA"
+                onChangeText={setLocation}
+            />
+            <Text style={styles.headingText}>Vehicle No</Text>
+            <TextInput style={styles.formCommon}
+                placeholder="Pickup Location"
+                placeholderTextColor="#A4A5AA"
+                onChangeText={setvehicleNo}
+            />
+            <Text style={styles.headingText}>Payment</Text>
+            <View style={styles.rows}>
+            <TouchableOpacity
+              style={[
+                styles.formCommon,
+                styles.btn,
+                styles.inputs,
+                selectedOption === 'VisaMaster' ? styles.selected : null,
+              ]}
+              onPress={() => handleOptionSelect('VisaMaster')}
+            >
+              <Text style={styles.btnText}>Visa / Master</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.formCommon,
+                styles.btn,
+                styles.inputs,
+                selectedOption === 'Cash' ? styles.selected : null,
+              ]}
+              onPress={() => handleOptionSelect('Cash')}
+            >
+              <Text style={styles.btnText}>Cash</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity onPress={handleBookNowClick}>
+              <View style={[styles.sbmtBtn]}>
+                <View style={[styles.sbmtBtnView, styles.fair]}>
+                  <Text style={[styles.fairSize, styles.sbmtBtnText]}>Fair</Text>
+                  <Text style={[styles.priceSize, styles.sbmtBtnText]}>{'LKR' + fairAmount.toFixed(2)}</Text>
                 </View>
+                <View style={[styles.sbmtBtnView]}>
+                  <Text style={[styles.bookNowSize, styles.sbmtBtnText]}>Book Now</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <RawBottomSheet ref={refRBSheet1} height={450} closeOnDragDown={true}>
+            
+            </RawBottomSheet>
+            {isBottomSheetVisible1 && refRBSheet.current && refRBSheet1.current.open()}
+        </View>
+
 
       </RawBottomSheet>
       {isBottomSheetVisible && refRBSheet.current.open()}
@@ -303,6 +396,9 @@ const BookingPlacePageClosedPo = () => {
 };
 
 const styles = StyleSheet.create({
+  selected: {
+    backgroundColor: COLORS.primary,
+  },
   inputs: {
     flex: 1,
 },

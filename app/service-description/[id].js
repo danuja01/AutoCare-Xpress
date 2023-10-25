@@ -33,6 +33,7 @@ const ServiceDesc = () => {
   const [islLoading, setIsLoading] = useState(false);
 
   const sid = params.id;
+  const id = params.id;
 
   const fetchDetails = async () => {
     setIsLoading(true);
@@ -113,7 +114,7 @@ const ServiceDesc = () => {
           <TouchableOpacity
             style={styles.confirmBtnContainer}
             onPress={() => {
-              router.push(`/location`)
+              router.push(`/location/${id}`);
             }}
           >
             <LinearGradient
