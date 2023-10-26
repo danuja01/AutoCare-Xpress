@@ -30,6 +30,7 @@ const DemoComp = () => {
           "Waiting for confirmation from the service station, this will take some time",
       },
     ],
+    completionStatus: "ongoing",
   };
 
   const writeOrder = () => {
@@ -96,6 +97,12 @@ const DemoComp = () => {
           style={styles.button}
         >
           <Text>Manage Services</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/adminJobs")}
+          style={styles.button}
+        >
+          <Text>Admin Jobs</Text>
         </TouchableOpacity>
         <DialogBox
           visible={visible}

@@ -39,9 +39,9 @@ export {
   NewCard,
   DriverCard,
   HistoryCard,
-  JobDetailsCard
+  JobDetailsCard,
   DriverDetailsPane,
   FromClient,
   ToClient,
-  AddDriver
+  AddDriver,
 };
