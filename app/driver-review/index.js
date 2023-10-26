@@ -18,6 +18,7 @@ import { FONT, SIZES } from "../../constants";
 import { ActiveHeader, DriverDetailsPane } from "../../components";
 import { useNavigation } from '@react-navigation/native';
 import { DamageAssessment } from "../damage-assessment/index.js"
+import { useRouter } from "expo-router";
 
 const DriverReviewPage = () => {
 
@@ -26,6 +27,8 @@ const DriverReviewPage = () => {
   const navigateToDamageAssessment = () => {
     navigation.navigate(DamageAssessment);
   };
+
+  const router = useRouter();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
@@ -94,7 +97,8 @@ const DriverReviewPage = () => {
           <TouchableOpacity
             style={[styles.rectangleGroup, styles.frameInnerLayout]}
             activeOpacity={0.2}
-            onPress={navigateToDamageAssessment}
+            //onPress={navigateToDamageAssessment}
+            onPress={() => router.push("/damage-assessment")}
           >
             <LinearGradient
               style={[styles.frameInner, styles.frameInnerLayout]}

@@ -20,7 +20,7 @@ const AddDriverMain = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
       <Stack.Screen options={{ header: () => null }} />
-      <ScrollView style={styles.container}>
+      <ScrollView >
         {/* <BackNavBtn /> */}
         <AddDriver />
       </ScrollView>
