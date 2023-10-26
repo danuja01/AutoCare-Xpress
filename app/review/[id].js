@@ -59,12 +59,15 @@ const ReviewPage = () => {
         setRating(0);
         setReview("");
 
-        const addedDate = new Date().toISOString(); // Get the current date in ISO format
+        const date = new Date();
+        const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+        const currentdate = `${month}/${day}/${year}`;
+        console.log(currentdate);
 
         await update(newReviewRef, {
           rating: rating,
           review: review,
-          addedDate: addedDate,
+          addedDate: currentdate,
         }).then(() => {
           fetchReviews();
         });

@@ -9,6 +9,7 @@ import {
   Search,
   OfficialDealers,
   ServiceCenters,
+  NewCard,
 } from "../../components";
 
 import { ref, onValue } from "firebase/database";

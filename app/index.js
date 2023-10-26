@@ -6,7 +6,6 @@ import Home from "./home";
 import Active from "./active-job";
 import Account from "./account";
 import { Redirect, Stack } from "expo-router";
-import Location from "./location";
 import { LogBox } from "react-native";
 import PickupLocation from "./pickuplocation";
 import Serviceinfo from "./serviceinfo";
@@ -22,7 +21,7 @@ export default function Page() {
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <Stack.Screen options={{ header: () => null }} />
 
-      <Redirect href="/login" />
+      <Redirect href="/user" />
     </View>
   );
 }
