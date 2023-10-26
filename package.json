@@ -47,7 +47,8 @@
     "react-native-select-dropdown": "^3.4.0",
     "react-native-star-rating": "^1.1.0",
     "react-native-stock-star-rating": "^1.0.6",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "@react-native-async-storage/async-storage": "1.18.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

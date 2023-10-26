@@ -29,9 +29,11 @@ export default Home = () => {
 
     onValue(serviceStaionsRef, (snapshot) => {
       const data = snapshot.val();
+
       const serviceStaions = Object.keys(data).map((key) => {
         return { id: key, ...data[key] };
       });
+
       setServiceStaions(serviceStaions);
     });
 

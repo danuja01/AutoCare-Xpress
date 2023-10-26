@@ -9,8 +9,11 @@ import {
 import { db } from "../../firebase/config";
 import { ref, set } from "firebase/database";
 import DialogBox from "../../components/common/dialog";
+import { useRouter } from "expo-router";
 
 const DemoComp = () => {
+  const router = useRouter();
+
   const sampleOrder = {
     vehicleModel: "Toyota Axio Hybrid",
     vehicleType: "Sedan",
@@ -87,6 +90,12 @@ const DemoComp = () => {
           style={styles.button}
         >
           <Text>Open Dialog</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/admin-services")}
+          style={styles.button}
+        >
+          <Text>Manage Services</Text>
         </TouchableOpacity>
         <DialogBox
           visible={visible}
