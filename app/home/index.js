@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { COLORS, SIZES } from "../../constants";
 import styles from "./home.style";
 import {
@@ -9,6 +9,7 @@ import {
   Search,
   OfficialDealers,
   ServiceCenters,
+  NewCard,
 } from "../../components";
 
 import { ref, onValue } from "firebase/database";
@@ -19,6 +20,8 @@ export default Home = () => {
   const [officialDealers, setOfficialDealers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
   const getServiceStations = () => {
     setIsLoading(true);
 
@@ -26,9 +29,11 @@ export default Home = () => {
 
     onValue(serviceStaionsRef, (snapshot) => {
       const data = snapshot.val();
+
       const serviceStaions = Object.keys(data).map((key) => {
         return { id: key, ...data[key] };
       });
+
       setServiceStaions(serviceStaions);
     });
 
@@ -68,7 +73,7 @@ export default Home = () => {
         <HomeHeader
           iconUrl={require("../../assets/images/user.png")}
           dimension={SIZES.xxxLarge * 1.15}
-          handlePressUser={() => alert("Profile")}
+          handlePressUser={() => router.push("/demo-content")}
           handlePressLocation={() => alert("Location")}
         />
         <Search />
