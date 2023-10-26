@@ -20,11 +20,11 @@ const ToUserModal = () => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <ToClient />
-            {/* <Pressable
-              style={[styles.button, styles.buttonClose]}
+            <Pressable
+              //style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}>
               <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable> */}
+            </Pressable>
           </View>
         </View>
       </Modal>

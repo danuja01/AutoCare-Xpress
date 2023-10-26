@@ -10,13 +10,17 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontSize, Color, FontFamily, Border } from "../../../assets/GlobalStyles";
 import { FONT, SIZES, COLORS } from "../../../constants";
+import { useRouter } from "expo-router";
 
 const ToClient = () => {
+
+const router = useRouter();
   const onFrameButtonClick = useCallback(() => {
     Alert.alert("Are you sure?", "", [
       {
         text: "Yes",
-        onPress: () => console.log("Yes pressed"),
+        // onPress: () => console.log("Yes pressed"),
+        onPress:() => router.push("/confirm-delivery")
       },
       {
         text: "No",
