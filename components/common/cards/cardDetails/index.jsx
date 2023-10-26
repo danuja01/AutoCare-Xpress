@@ -18,7 +18,7 @@
               };
 
         return (
-            <TouchableOpacity style={styles.cardContainer} onPress={handleCardClick}>
+            <TouchableOpacity onPress={handleCardClick}>
                 <View style={styles.card}>
                     <View style={styles.cardView}>
                         <Text style={[styles.holderNameSize, styles.cardText]}>{cardData.holdersName}</Text>
@@ -33,16 +33,14 @@
     };
 
     const styles = StyleSheet.create({
-        cardContainer: {
-            flex: 1,
-        },
         card: {
             flexDirection: 'row',
             margin: 10,
             borderRadius: 20,
             justifyContent: "center",
             alignItems: "center",
-            padding: 5,
+            paddingHorizontal: 15,
+            paddingVertical: 5,
             backgroundColor: COLORS.primary
         },
         cardView: {
