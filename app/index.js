@@ -14,7 +14,7 @@ export default function Page() {
     <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <Stack.Screen options={{ header: () => null }} />
 
-      <Redirect href="/user" />
+      <Redirect href="/login" />
     </View>
   );
 }
