@@ -13,6 +13,8 @@ const SectionCard = ({ reviewData, onDelete, deleteReview, onUpdate }) => {
   const [updatedRating, setUpdatedRating] = useState(reviewData.rating);
   const [updatedReview, setUpdatedReview] = useState(reviewData.review);
 
+  const curId = "mzFjcH3K4AbrfeASY2sCkclMc4r1";
+
   const handleDelete = async () => {
     try {
       await deleteReview(reviewData.id);
@@ -48,12 +50,16 @@ const SectionCard = ({ reviewData, onDelete, deleteReview, onUpdate }) => {
             <Text style={[styles.oshadaThawalampola, styles.textTypo]}>
               Oshada Thawalampola
             </Text>
-            <TouchableOpacity onPress={() => setShowDeletePopup(true)} style={[styles.deletebtn]}>
-              <Text style={[styles.deletetext]}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShowUpdatePopup(true)} style={[styles.updatebtn]}>
-              <Text style={[styles.updatetext]}>Update</Text>
-            </TouchableOpacity>
+            {curId === reviewData.userId && (
+                <>
+                  <TouchableOpacity onPress={() => setShowDeletePopup(true)} style={[styles.deletebtn]}>
+                    <Text style={[styles.deletetext]}>Delete</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setShowUpdatePopup(true)} style={[styles.updatebtn]}>
+                    <Text style={[styles.updatetext]}>Update</Text>
+                  </TouchableOpacity>
+                </>
+              )}
             <Text style={[styles.text, styles.textTypo]}>{reviewData.addedDate}</Text>
           </View>
         </View>
