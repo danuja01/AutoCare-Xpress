@@ -8,11 +8,12 @@ import { Device } from 'expo-device';
 import { Stack, useLocalSearchParams } from "expo-router";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, watchPositionAsync, Accuracy } from "expo-location";
 import RawBottomSheet from "react-native-raw-bottom-sheet";
-import { COLORS } from "../../constants";
+import { COLORS , SIZES } from "../../constants";
 import { db } from "../../firebase/config";
 import { ref, get, push, update } from "firebase/database";
 import { remove } from "firebase/database";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import CardDetailsCard from "../../components/common/cards/cardDetails";
 
 const BookingPlacePageClosedPo = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -21,6 +22,24 @@ const BookingPlacePageClosedPo = () => {
   const [distance, setDistance] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+
+  const sampleData1 = {
+    holdersName: 'John Doe',
+    cardNo: '1234 5678 9012 3456',
+    cardType: 'Visa',
+};
+  
+const sampleData2 = {
+    holdersName: 'Jane Smith',
+    cardNo: '9876 5432 1098 7654',
+    cardType: 'Mastercard',
+};
+  
+const sampleData3 = {
+    holdersName: 'Alice Johnson',
+    cardNo: '4567 8901 2345 6789',
+    cardType: 'American Express',
+};
 
   const params = useLocalSearchParams();
 
@@ -88,14 +107,22 @@ const BookingPlacePageClosedPo = () => {
 
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [isBottomSheetVisible1, setIsBottomSheetVisible1] = useState(false);
+  const [isBottomSheetVisible3, setIsBottomSheetVisible3] = useState(false);
+
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
+  const refRBSheet3 = useRef();
 
   const mapViewRef = useRef(null);
 
   const handleConfirmClick = () => {
     setIsBottomSheetVisible(false);
     refRBSheet.current.open();
+  };
+
+  const handleadd = () => {
+    setIsBottomSheetVisible3(false);
+    refRBSheet3.current.open();
   };
 
   const handleBookNowClick = async () => {
@@ -217,6 +244,57 @@ const BookingPlacePageClosedPo = () => {
       alert("An error occurred while searching for the location");
     }
   };
+
+  const userId = "z3tPuQJiyMUgeUwGaZthiabA4Z43";
+
+  const handleSaveCard = async () => {
+    try {
+      const paymentData = {
+        holdersName,
+        cardNumber,
+        month,
+        year,
+        cvv,
+      };
+  
+      const paymentRef = ref(db, `payment/${userId}`); // Assuming "payment" is the collection name
+  
+      await push(paymentRef, paymentData).then((docRef) => {
+        console.log("Document written with ID: ", docRef.key);
+        alert("Card data saved successfully!");
+      });
+  
+      // Fetch payment data after saving
+      await fetchPaymentData();
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Error occurred while saving card data.");
+    }
+  };
+  
+
+
+  const [paymentData, setPaymentData] = useState(null);
+
+  // Function to fetch payment data
+  const fetchPaymentData = async () => {
+    try {
+      const snapshot = await get(ref(db, `payment/${userId}`));
+      if (snapshot.exists()) {
+        const paymentData = snapshot.val();
+        setPaymentData(paymentData)
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  
+  useEffect(() => {
+    fetchPaymentData(); // Call the function to fetch payment data
+  }, []); // This effect will run only once when the component mounts
+
+  
 
   return (
     <View style={styles.bookingPlacePageClosedPo}>
@@ -376,7 +454,92 @@ const BookingPlacePageClosedPo = () => {
               </View>
             </TouchableOpacity>
             <RawBottomSheet ref={refRBSheet1} height={450} closeOnDragDown={true}>
-            
+            <View style={{
+                    flex: 1
+                }}>
+                    <Text style={[styles.headingText, styles.overview]}>Saved Cards</Text>
+                </View>
+                <View style={styles.cardContainer}>
+                  {paymentData &&
+                    Object.entries(paymentData).map(([key, value]) => (
+                      <CardDetailsCard key={key} cardData={value} />
+                    ))}
+                </View>
+                  <TouchableOpacity onPress={handleadd}>
+                    <View style={[styles.createCard]}>
+                      <Text>+ Add new card</Text>
+                    </View>
+                  </TouchableOpacity>
+                  
+
+                  <RawBottomSheet ref={refRBSheet3} height={450} closeOnDragDown={true}>
+                  <View style={{
+                    flex: 1
+                }}>
+                    <View>
+                    <View>
+                      <Text style={styles.headingText}>Card Holder Name</Text>
+                      <TextInput
+                        placeholder="John Doe"
+                        value={holdersName}
+                        onChangeText={(text) => setholdersName(text)} // Update the state on change
+                        style={[styles.formCommon]}
+                        placeholderTextColor="#A4A5AA"
+                      />
+                      <Text style={styles.headingText}>Card Number</Text>
+                      <TextInput
+                        placeholder="Visa / Master"
+                        value={cardNumber}
+                        onChangeText={(text) => setcardNumber(text)}
+                        style={[styles.formCommon, styles.btn]}
+                        placeholderTextColor="#A4A5AA"
+                      />
+                    </View>
+                    <View style={[styles.rows]}>
+                      <View style={[styles.inputs]}>
+                        <Text style={[styles.headingText]}>Month</Text>
+                        <TextInput
+                          placeholder="MM"
+                          value={month}
+                          onChangeText={(text) => setMonth(text)}
+                          style={[styles.formCommon, styles.btn]}
+                          placeholderTextColor="#A4A5AA"
+                        />
+                      </View>
+                      <View style={[styles.inputs]}>
+                        <Text style={styles.headingText}>Year</Text>
+                        <TextInput
+                          placeholder="YY"
+                          value={year}
+                          onChangeText={(text) => setYear(text)}
+                          style={[styles.formCommon, styles.btn]}
+                          placeholderTextColor="#A4A5AA"
+                        />
+                      </View>
+                      <View style={[styles.inputs]}>
+                        <Text style={styles.headingText}>CVV</Text>
+                        <TextInput
+                          placeholder="CVV"
+                          value={cvv}
+                          onChangeText={(text) => setCVV(text)}
+                          style={[styles.formCommon, styles.btn]}
+                          placeholderTextColor="#A4A5AA"
+                        />
+                      </View>
+                    </View>
+                    <TouchableOpacity onPress={handleSaveCard}>
+                      <View style={[styles.sbmtBtn]}>
+                        <View style={[styles.sbmtBtnView]}>
+                          <Text style={[styles.bookNowSize, styles.sbmtBtnText]}>ADD CARD</Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+                  </RawBottomSheet>
+            {isBottomSheetVisible3 && refRBSheet.current && refRBSheet3.current.open()}
+
+
             </RawBottomSheet>
             {isBottomSheetVisible1 && refRBSheet.current && refRBSheet1.current.open()}
         </View>
@@ -396,6 +559,35 @@ const BookingPlacePageClosedPo = () => {
 };
 
 const styles = StyleSheet.create({
+  overview: {
+    fontWeight: 600
+},
+headingText: {
+    color: "#000000",
+    marginLeft: 12,
+},
+cardContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: SIZES.large,
+    backgroundColor: "#A4A5AA",
+    borderRadius: 20,
+    bottom:255,
+},
+createCard: {
+    borderWidth: 1,           // Border width
+    borderRadius: 2,         // Border radius (for rounded corners)
+    borderColor: 'black',    // Border color
+    borderStyle: 'dotted',   // Set the border style to dotted
+    padding: 10,
+    marginHorizontal: SIZES.large,
+    backgroundColor: COLORS.white,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    bottom : 30,
+},
   selected: {
     backgroundColor: COLORS.primary,
   },
