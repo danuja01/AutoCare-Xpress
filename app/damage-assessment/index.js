@@ -19,6 +19,9 @@ import { db, storage } from "../../firebase/config";
 import { ref, set, push } from "firebase/database";
 import { getDownloadURL, uploadBytes, ref as imgRef } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
+import {
+  BackNavBtn,
+} from "../../components";
 
 const DamageAssessment = () => {
   const params = useLocalSearchParams();
@@ -81,7 +84,18 @@ const DamageAssessment = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
-      <Stack.Screen options={{ header: () => null }} />
+      {/* <Stack.Screen options={{ header: () => null }} /> */}
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: COLORS.background,
+          },
+          headerShadowVisible: false,
+          headerBackVisible: false,
+          headerLeft: () => <BackNavBtn />,
+          headerTitle: " Damage Assessment",
+        }}
+      />
       <ScrollView style={styles.container}>
         <View style={styles.damageAssessment}>
           <TouchableOpacity
@@ -98,9 +112,10 @@ const DamageAssessment = () => {
           <View style={[styles.damageAssessmentChild, styles.damageLayout]} />
           <View style={[styles.damageAssessmentItem, styles.damageLayout]} />
           <View style={[styles.damageAssessmentInner, styles.damageLayout]} />
-          <Pressable
+          {/* <Pressable
             style={[styles.rectangleParent, styles.frameChildLayout]}
             //onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('DriverReviewPage')}
           >
             <View style={[styles.frameChild, styles.frameChildLayout]} />
             <Image
@@ -108,7 +123,7 @@ const DamageAssessment = () => {
               contentFit="cover"
               source={require("../../assets/images/arrowleft.png")}
             />
-          </Pressable>
+          </Pressable> */}
           <TouchableOpacity
             style={styles.done}
             activeOpacity={0.2}
