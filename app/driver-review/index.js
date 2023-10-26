@@ -16,8 +16,17 @@ import { COLORS } from "../../constants";
 import { Stack } from "expo-router";
 import { FONT, SIZES } from "../../constants";
 import { ActiveHeader, DriverDetailsPane } from "../../components";
+import { useNavigation } from '@react-navigation/native';
+import { DamageAssessment } from "../damage-assessment/index.js"
 
 const DriverReviewPage = () => {
+
+  const navigation = useNavigation();
+
+  const navigateToDamageAssessment = () => {
+    navigation.navigate(DamageAssessment);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
       <Stack.Screen options={{ header: () => null }} />
@@ -85,7 +94,7 @@ const DriverReviewPage = () => {
           <TouchableOpacity
             style={[styles.rectangleGroup, styles.frameInnerLayout]}
             activeOpacity={0.2}
-            onPress={() => {}}
+            onPress={navigateToDamageAssessment}
           >
             <LinearGradient
               style={[styles.frameInner, styles.frameInnerLayout]}
@@ -141,7 +150,7 @@ const styles = StyleSheet.create({
     top: "35%",
     fontFamily: FontFamily.bodyNormalBold,
     fontWeight: "700",
-    color: Color.iOSFFFFFF,
+    color: COLORS.white,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",

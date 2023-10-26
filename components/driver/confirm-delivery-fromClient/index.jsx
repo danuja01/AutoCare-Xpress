@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     borderRadius: Border.br_mini,
-    backgroundColor: Color.colorDarkslateblue_100,
+    backgroundColor: COLORS.primary,
   },
   rectangleParent: {
     top: "68%",
