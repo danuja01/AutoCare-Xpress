@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { FONT, SIZES, COLORS } from "../../../../constants";
 
-const JobDetailsCard = ({ job }) => {
+const JobDetailsCard = ({ job, handleDelete }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={() => {}}>
       <View style={styles.container}>
@@ -17,6 +17,20 @@ const JobDetailsCard = ({ job }) => {
           <Text style={styles.title}>: {job.time}</Text>
           <Text style={styles.title}>: {job.completionStatus}</Text>
         </View>
+        <TouchableOpacity
+          style={[{ position: "absolute", right: 5, bottom: 5, padding: 10 }]}
+          onPress={() => {
+            handleDelete();
+          }}
+        >
+          <Text
+            style={{
+              color: COLORS.red,
+            }}
+          >
+            delete
+          </Text>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );

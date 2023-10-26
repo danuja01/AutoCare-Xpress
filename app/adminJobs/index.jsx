@@ -6,14 +6,16 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Stack } from "expo-router";
 import { COLORS, FONT, SIZES } from "../../constants";
 import { JobDetailsCard } from "../../components";
 import { BackNavBtn } from "../../components";
 import { db } from "../../firebase/config";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, set } from "firebase/database";
 import DialogBox from "../../components/common/dialog";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const JobList = () => {
   //get the service station from database
@@ -23,29 +25,84 @@ const JobList = () => {
 
   const [jobs, setJobs] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const sampleData = {
-    _id: "",
-    vehicleNo: "John Doe",
-    date: "2023-10-12",
-    time: "10.00 AM",
-    status: "Pending",
+  const sampleOrder = {
+    vehicleModel: "Toyota Axio Hybrid",
+    vehicleType: "Sedan",
+    vehicleNumber: "WP CAK 1234",
+    date: "2021-09-20",
+    time: "09:00",
+    serviceStation: "Toyota Lanka",
+    location: "Kandy",
+    driver: "Sachintha Dissanayake",
+    status: [
+      {
+        title: "Waiting for confirmation",
+        description:
+          "Waiting for confirmation from the service station, this will take some time",
+      },
+    ],
+    completionStatus: "waiting",
   };
 
+  const writeOrder = () => {
+    const userId = "-Nh7wegVm0idVUitqXN2";
+
+    set(ref(db, `active-orders/${userId}`), sampleOrder).then(() => {
+      console.log("Order added successfully");
+    });
+  };
+
+  const handleAccept = () => {
+    const userId = "-Nh7wegVm0idVUitqXN2";
+    const updatedOrder = { ...sampleOrder };
+    updatedOrder.status.push({
+      title: "Order Confirmed",
+      description: "Your order has been confirmed",
+    });
+    updatedOrder.completionStatus = "ongoing";
+    set(ref(db, `active-orders/${userId}`), updatedOrder).then(() => {
+      console.log("Order status updated");
+    });
+    setVisible(false);
+  };
   const fetchActiveJobs = () => {
+    setLoading(true);
     const activeJobsRef = ref(db, `active-orders/`);
 
     onValue(activeJobsRef, (snapshot) => {
       const data = snapshot.val();
-      const jobs = Object.keys(data).map((key) => {
-        return {
-          _id: key,
-          ...data[key],
-        };
-      });
-      console.log(jobs);
-      setJobs(jobs);
+
+      if (data) {
+        const jobs = Object.keys(data).map((key) => {
+          return {
+            ...data[key],
+          };
+        });
+        setJobs(jobs);
+      } else {
+        setJobs([]);
+      }
+
+      setLoading(false);
     });
+  };
+
+  const handleDelete = () => {
+    const id = "-Nh7wegVm0idVUitqXN2";
+
+    setLoading(true);
+
+    const activeJobsRef = ref(db, `active-orders/${id}`);
+
+    set(activeJobsRef, null)
+      .then(() => {
+        Alert.alert("Success", "Job deleted successfully");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -66,22 +123,30 @@ const JobList = () => {
             headerTitle: serviceStation,
           }}
         />
+        <Spinner
+          visible={loading}
+          textStyle={{ color: COLORS.white }}
+          color={COLORS.white}
+        />
         <ScrollView>
-          <View style={[styles.sbmtBtn, styles.sbmtBtnView]}>
-            <TouchableOpacity
-              onPress={() => {
-                setVisible(true);
-              }}
-              style={[styles.sbmtBtnView]}
-            >
+          <TouchableOpacity
+            onPress={() => {
+              setVisible(true);
+            }}
+            style={[styles.sbmtBtn, styles.sbmtBtnView]}
+          >
+            <View style={[styles.sbmtBtnView]}>
               <Text style={[styles.bookNowSize, styles.sbmtBtnText]}>
                 ACTIVE JOBS
               </Text>
-            </TouchableOpacity>
-          </View>
-          {jobs && jobs.map((job, index) => <JobDetailsCard job={job} />)}
+            </View>
+          </TouchableOpacity>
+          {jobs &&
+            jobs.map((job, index) => (
+              <JobDetailsCard job={job} handleDelete={handleDelete} />
+            ))}
         </ScrollView>
-        {jobs && console.log(jobs[0])}
+
         {jobs && (
           <DialogBox
             visible={visible}
@@ -108,7 +173,7 @@ const JobList = () => {
                 desc: "09:00",
               },
             ]}
-            // onPressAccept={handleAccept}
+            onPressAccept={handleAccept}
             onPressDecline={() => setVisible(false)}
           />
         )}

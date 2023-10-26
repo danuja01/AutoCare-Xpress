@@ -30,7 +30,7 @@ const DemoComp = () => {
           "Waiting for confirmation from the service station, this will take some time",
       },
     ],
-    completionStatus: "ongoing",
+    completionStatus: "waiting",
   };
 
   const writeOrder = () => {
