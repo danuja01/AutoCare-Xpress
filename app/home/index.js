@@ -14,7 +14,6 @@ import {
 
 import { ref, onValue } from "firebase/database";
 import { db } from "../../firebase/config";
-import Newpop from "../../components/booking/newCard/index"
 
 export default Home = () => {
   const [serviceStaions, setServiceStaions] = useState([]);
@@ -30,9 +29,11 @@ export default Home = () => {
 
     onValue(serviceStaionsRef, (snapshot) => {
       const data = snapshot.val();
+
       const serviceStaions = Object.keys(data).map((key) => {
         return { id: key, ...data[key] };
       });
+
       setServiceStaions(serviceStaions);
     });
 

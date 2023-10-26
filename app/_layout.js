@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import { useCallback, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { View } from "react-native";
@@ -28,7 +28,7 @@ const Layout = () => {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null;
+    return <Slot />;
   }
 
   return <Stack onLayout={onLayoutRootView} />;
