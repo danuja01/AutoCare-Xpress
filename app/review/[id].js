@@ -30,6 +30,8 @@ const ReviewPage = () => {
 
   const sid = params.id;
 
+  const curId = "mzFjcH3K4AbrfeASY2sCkclMc4r1";
+
   const fetchReviews = async () => {
     try {
       const snapshot = await get(ref(db, `reviews/${sid}`));
@@ -59,6 +61,8 @@ const ReviewPage = () => {
         setRating(0);
         setReview("");
 
+        const userId = "mzFjcH3K4AbrfeASY2sCkclMc4r1";
+
         const date = new Date();
         const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
         const currentdate = `${month}/${day}/${year}`;
@@ -68,6 +72,7 @@ const ReviewPage = () => {
           rating: rating,
           review: review,
           addedDate: currentdate,
+          userId: userId,
         }).then(() => {
           fetchReviews();
         });
