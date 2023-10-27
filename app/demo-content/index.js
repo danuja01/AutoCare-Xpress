@@ -10,6 +10,7 @@ import { db } from "../../firebase/config";
 import { ref, set } from "firebase/database";
 import DialogBox from "../../components/common/dialog";
 import { useRouter } from "expo-router";
+import { ScrollView } from "react-native-gesture-handler";
 
 const DemoComp = () => {
   const router = useRouter();
@@ -81,6 +82,7 @@ const DemoComp = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       <View>
         <TouchableOpacity onPress={writeOrder} style={styles.button}>
           <Text>Make Order</Text>
@@ -104,6 +106,42 @@ const DemoComp = () => {
         >
           <Text>Admin Jobs</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/admin-dashboard")}
+          style={styles.button}
+        >
+          <Text>Admin Dash</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/driver-review")}
+          style={styles.button}
+        >
+          <Text>Driver Review page</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/damage-assessment")}
+          style={styles.button}
+        >
+          <Text>Add Damage Assessment</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/add-driver")}
+          style={styles.button}
+        >
+          <Text>Add Driver</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/admin-viewDriver")}
+          style={styles.button}
+        >
+          <Text>View Drivers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/confirm-delivery")}
+          style={styles.button}
+        >
+          <Text>Confirm Delievry</Text>
+        </TouchableOpacity>
         <DialogBox
           visible={visible}
           setVisible={setVisible}
@@ -112,6 +150,7 @@ const DemoComp = () => {
           onPressDecline={() => setVisible(false)}
         />
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

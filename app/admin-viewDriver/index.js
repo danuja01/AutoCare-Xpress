@@ -12,6 +12,7 @@ import { COLORS, FONT, SIZES } from "../../constants";
 import { DriverCard, ActiveHeader } from "../../components";
 import { db } from "../../firebase/config";
 import { ref, get, push, update, remove } from "firebase/database";
+import { useRouter } from "expo-router";
 
 const DriverPage = () => {
   const [driverData, setDriverData] = useState([]);
@@ -63,7 +64,7 @@ const DriverPage = () => {
           </View>
         </View>
         {driverData.map((driver) => (
-          <View key={driver._id}>
+          <View key={driver._id} style={styles.driverCardContainer}>
             <DriverCard
               _id={driver._id}
               name={driver.firstName}
@@ -151,6 +152,13 @@ const styles = StyleSheet.create({
   buttonTextStyle: {
     color: "white",
     fontWeight: "bold",
+  },
+  driverCardContainer: {
+    backgroundColor: COLORS.white, // Set a background color
+    borderRadius: 10,
+    margin: 10,
+    padding: 10,
+    elevation: 2,
   },
 });
 

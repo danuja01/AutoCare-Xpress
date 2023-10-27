@@ -14,6 +14,7 @@ import { ref, get, push, update } from "firebase/database";
 import { remove } from "firebase/database";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CardDetailsCard from "../../components/common/cards/cardDetails";
+import { ScrollView } from "react-native-gesture-handler";
 
 const BookingPlacePageClosedPo = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -454,17 +455,17 @@ const sampleData3 = {
               </View>
             </TouchableOpacity>
             <RawBottomSheet ref={refRBSheet1} height={450} closeOnDragDown={true}>
-            <View style={{
-                    flex: 1
-                }}>
+                <View style={styles.textBoxHeight}>
                     <Text style={[styles.headingText, styles.overview]}>Saved Cards</Text>
                 </View>
-                <View style={styles.cardContainer}>
-                  {paymentData &&
-                    Object.entries(paymentData).map(([key, value]) => (
-                      <CardDetailsCard key={key} cardData={value} />
-                    ))}
-                </View>
+                  <View style={styles.cardContainer}>
+                    <ScrollView>
+                      {paymentData &&
+                        Object.entries(paymentData).map(([key, value]) => (
+                          <CardDetailsCard key={key} cardData={value} />
+                      ))}
+                    </ScrollView>
+                  </View>
                   <TouchableOpacity onPress={handleadd}>
                     <View style={[styles.createCard]}>
                       <Text>+ Add new card</Text>
@@ -566,14 +567,17 @@ headingText: {
     color: "#000000",
     marginLeft: 12,
 },
+textBoxHeight: {
+  maxHeight: 20,
+  flex: 1
+},
 cardContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
+    marginVertical: 40,
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: SIZES.large,
     backgroundColor: "#A4A5AA",
     borderRadius: 20,
-    bottom:255,
 },
 createCard: {
     borderWidth: 1,           // Border width
@@ -588,28 +592,28 @@ createCard: {
     alignItems: "center",
     bottom : 30,
 },
-  selected: {
-    backgroundColor: COLORS.primary,
-  },
-  inputs: {
-    flex: 1,
+selected: {
+  backgroundColor: COLORS.primary,
+},
+inputs: {
+  flex: 1,
 },
 formCommon: {
-    height: 40,
-    borderColor: '#A4A5AA',
-    borderWidth: 1,
-    borderRadius: 10,
-    color: '#000000',
-    paddingLeft: 10,
-    margin: 10
+  height: 40,
+  borderColor: '#A4A5AA',
+  borderWidth: 1,
+  borderRadius: 10,
+  color: '#000000',
+  paddingLeft: 10,
+  margin: 10
 },
 rows: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 3,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginBottom: 3,
 },
 overview: {
-    fontWeight: 600
+  fontWeight: 600
 },
 headingText: {
     color: "#000000",
